@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\InputValidation;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use function Laravel\Prompts\error;
 use App\Services\UserList;
@@ -37,13 +38,14 @@ class HelloController extends Controller
     }
 
     public function input3(Request $request): JsonResponse{
+        $ip = $request->ip();
+        Log::info("Controller: received the user request. ip: $ip");
         $validator = $request->validate(
             [
                 'name' => 'required|string|between:5,50',
                 'age' => 'required|integer|between:18,50',
             ]
         );
-
         return response()->json($validator, 200);
     }
 }
