@@ -11,8 +11,14 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    public function userList(UserList $userList): JsonResponse{
-        return response()->json($userList->ListUsers(), 200);
+    private UserList $userList;
+    public function __construct(UserList $userList)
+    {
+        $this->userList = $userList;
+    }
+
+    public function userList(): JsonResponse{
+        return response()->json($this->userList->ListUsers(), 200);
     }
 
     public function get_user_data(InputValidation $request): JsonResponse{

@@ -8,6 +8,11 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+
+/*
+ *
+ * one way of handling request without controller
+ */
 Route::get('/hello', function (Request $request) {
     $name = $request->query('name');
     if ($name) {
@@ -16,6 +21,9 @@ Route::get('/hello', function (Request $request) {
     return response()->json(["message" => "Hello World!"], 200);
 });
 
+/*
+ * handling requests with controller
+ */
 Route::get('/helloV2', [Controllers\HelloController::class, 'hello_world']);
 
 Route::get('/helloV3/{name}', [Controllers\HelloController::class, 'hello_with_param']);
