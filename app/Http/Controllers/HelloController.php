@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Requests\InputValidation;
 use Illuminate\Support\Facades\Validator;
 use function Laravel\Prompts\error;
+use App\Services\UserList;
 
 class HelloController extends Controller
 {

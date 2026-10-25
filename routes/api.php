@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HelloController;
+use App\Http\Controllers;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
@@ -15,10 +15,12 @@ Route::get('/hello', function (Request $request) {
     return response()->json(["message" => "Hello World!"], 200);
 });
 
-Route::get('/hello2', [HelloController::class, 'hello']);
+Route::get('/hello2', [Controllers\HelloController::class, 'hello']);
 
-Route::get('/hello3/{name}', [HelloController::class, 'hello_with_param']);
+Route::get('/hello3/{name}', [Controllers\HelloController::class, 'hello_with_param']);
 
-Route::post('/input', [HelloController::class, 'input']);
-Route::post('/input2/',[HelloController::class, 'input2']);
-Route::post('/input3/',[HelloController::class, 'input3']);
+Route::post('/input', [Controllers\HelloController::class, 'input']);
+Route::post('/input2/',[Controllers\HelloController::class, 'input2']);
+Route::post('/input3/',[Controllers\HelloController::class, 'input3']);
+
+Route::get('/userList', [Controllers\UserController::class, 'userList']);
