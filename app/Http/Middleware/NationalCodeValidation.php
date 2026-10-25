@@ -14,7 +14,7 @@ class NationalCodeValidation
     public function handle(Request $request, Closure $next): Response
     {
         $validator = Validator::make($request->all(), [
-            'nationalCode' => 'required|integer|between:3,100',
+            'nationalCode' => 'required|integer|digits:10',
         ]);
         $ip = $request->ip();
         if ($validator->fails()) {
