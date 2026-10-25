@@ -48,4 +48,9 @@ class HelloController extends Controller
         );
         return response()->json($validator, 200);
     }
+
+    public function version(): JsonResponse{
+        $version = config('app.version');
+        return response()->json(["version" => $version], 200);
+    }
 }
