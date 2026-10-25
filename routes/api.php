@@ -16,13 +16,13 @@ Route::get('/hello', function (Request $request) {
     return response()->json(["message" => "Hello World!"], 200);
 });
 
-Route::get('/hello2', [Controllers\HelloController::class, 'hello']);
+Route::get('/helloV2', [Controllers\HelloController::class, 'hello_world']);
 
-Route::get('/hello3/{name}', [Controllers\HelloController::class, 'hello_with_param']);
+Route::get('/helloV3/{name}', [Controllers\HelloController::class, 'hello_with_param']);
 
-Route::post('/input', [Controllers\HelloController::class, 'input']);
-Route::post('/input2/',[Controllers\HelloController::class, 'input2']);
-Route::post('/input3/',[Controllers\HelloController::class, 'input3'])->middleware(NationalCodeValidation::class);
+Route::post('/userData', [Controllers\UserController::class, 'get_user_data'])->middleware(NationalCodeValidation::class);
+//Route::post('/input2/',[Controllers\HelloController::class, 'input2']);
+//Route::post('/input3/',[Controllers\HelloController::class, 'input3']);
 Route::get('/version', [Controllers\HelloController::class, 'version']);
 
 
