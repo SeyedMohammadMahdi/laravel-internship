@@ -23,7 +23,7 @@ to simply run the project we can use the following command in the root of the pr
 php artisan serve
 ```
 
-however i am using `lerd` on the ubuntu to serve the project
+however for the development [lerd](https://lerd.sh/) is used on the ubuntu to serve the project
 
 to register the project in `lerd` we can use the following command in the root of the project
 ```bash
