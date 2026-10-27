@@ -21,4 +21,17 @@ class ProductController extends Controller
         }
         return response()->json($this->productService->getProducts());
     }
+
+    public function filterProducts(Request $request): JsonResponse {
+        $category = $request->query('category', null);
+        $available = $request->query('isAvailable', null);
+
+        $isAvailable = match ($available) {
+            null => null,
+            'true' => true,
+            'false' => false
+        };
+
+        return response()->json($this->productService->filterProducts($category, $isAvailable));
+    }
 }

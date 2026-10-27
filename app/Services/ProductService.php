@@ -52,4 +52,48 @@ class ProductService
         }
         return $this->products;
     }
+
+    public function filterProducts(string $category = null, bool $isAvailable = null): array{
+        if ($category != null) {
+            $outputProducts = [];
+            foreach ($this->products as $product) {
+                if ($product["category"] == $category) {
+                    if ($isAvailable === true and $product["stock"] > 0) {
+                        array_push($outputProducts, $product);
+                    } else if ($isAvailable === false and $product["stock"] === 0) {
+                        array_push($outputProducts, $product);
+                    } else if($isAvailable === null) {
+                        array_push($outputProducts, $product);
+                    }
+                }
+            }
+            if (count($outputProducts) > 0) {
+                return $outputProducts;
+            } else {
+                return [
+                    "message" => "No products found",
+                ];
+            }
+        } else {
+            $outputProducts = [];
+            foreach ($this->products as $product) {
+                if ($isAvailable === true and $product["stock"] > 0) {
+                    array_push($outputProducts, $product);
+                } else if ($isAvailable === false and $product["stock"] == 0) {
+                    array_push($outputProducts, $product);
+                } else if($isAvailable === null){
+                    array_push($outputProducts, $product);
+                }
+
+            }
+            if (count($outputProducts) > 0) {
+                return $outputProducts;
+            } else {
+                return [
+                    "message" => "No products found",
+                ];
+            }
+        }
+
+    }
 }
