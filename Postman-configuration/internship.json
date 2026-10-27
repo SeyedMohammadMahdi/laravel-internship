@@ -1,0 +1,236 @@
+{
+  "info": {
+    "name": "internship",
+    "description": null,
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "hello world",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/helloV3/mohammad",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "helloV3",
+            "mohammad"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "get version",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/version",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "version"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "get users list",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/userList",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "userList"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "testing middle ware",
+      "request": {
+        "method": "post",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": "",
+            "disabled": false,
+            "type": "default"
+          }
+        ],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/userData",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "userData"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"mohammad\",\n  \"age\": 30,\n  \"nationalCode\": 1234456890\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "filter products by category or availability",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/filterProducts?category=milk-products",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "filterProducts"
+          ],
+          "query": [
+            {
+              "key": "category",
+              "value": "milk-products"
+            },
+            {
+              "key": "isAvailable",
+              "value": "true"
+            }
+          ],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "get product by id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/getProducts/:id",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "getProducts",
+            ":id"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "key": "id",
+              "value": "1"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "get products list",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/getProducts",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "getProducts"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "testing middle ware copy",
+      "request": {
+        "method": "post",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "description": "",
+            "disabled": false,
+            "type": "default"
+          }
+        ],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/sendNotification",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "sendNotification"
+          ],
+          "query": [],
+          "variable": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"type\": \"email\",\n  \"recipient\": \"mohammad\",\n  \"message\": \"how you doing mohammad?\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "variable": []
+}
