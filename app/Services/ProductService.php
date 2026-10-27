@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
+
 class ProductService
 {
     private array $products;
@@ -36,7 +38,18 @@ class ProductService
         ];
     }
 
-    public function getProducts(): array{
+    public function getProducts(int $id = null): array{
+        if ($id != null) {
+            foreach ($this->products as $product) {
+                if ($product["id"] == $id) {
+                    return $product;
+                }
+            }
+            return [
+                "message" => "Product not found",
+            ];
+
+        }
         return $this->products;
     }
 }
