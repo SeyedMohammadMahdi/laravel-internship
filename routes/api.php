@@ -35,3 +35,11 @@ Route::get('/version', [Controllers\HelloController::class, 'version']);
 
 
 Route::get('/userList', [Controllers\UserController::class, 'userList']);
+
+
+######################################
+#   product handling APIs
+######################################
+
+Route::get('getProducts/{id?}', [Controllers\ProductController::class, 'getProducts']);
+Route::get('filterProducts', [Controllers\ProductController::class, 'filterProducts']);
