@@ -43,3 +43,10 @@ Route::get('/userList', [Controllers\UserController::class, 'userList']);
 
 Route::get('getProducts/{id?}', [Controllers\ProductController::class, 'getProducts']);
 Route::get('filterProducts', [Controllers\ProductController::class, 'filterProducts']);
+
+
+#####################################
+#   Notification API
+#####################################
+
+Route::post('sendNotification', [Controllers\NotificationController::class, 'sendNotification']);
