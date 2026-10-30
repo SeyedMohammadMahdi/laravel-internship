@@ -50,3 +50,10 @@ Route::get('filterProducts', [Controllers\ProductController::class, 'filterProdu
 #####################################
 
 Route::post('sendNotification', [Controllers\NotificationController::class, 'sendNotification']);
+
+
+####################################
+#   discount API
+####################################
+
+Route::post('/calculatePrice', [Controllers\ProductController::class, 'calculateDiscount']);
