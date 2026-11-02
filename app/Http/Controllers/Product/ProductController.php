@@ -29,4 +29,10 @@ class ProductController extends Controller
         $resp = $this->productService->delete($id);
         return response()->json($resp, $resp["status_code"]);
     }
+
+    public function updateProduct(Request $request, int $id = null): JsonResponse{
+        $body = $request->json()->all();
+        $resp = $this->productService->update($body["data"], $body["id"]);
+        return response()->json($resp, $resp["status_code"]);
+    }
 }

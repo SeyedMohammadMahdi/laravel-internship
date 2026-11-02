@@ -83,4 +83,41 @@ class ProductService
             "status_code"=> 200,
         ];
     }
+
+    public function update(array $data, int $id = null): array{
+        if ($id == null){
+            return [
+                "message"=> "Product not found",
+                "status_code"=> 404,
+            ];
+        }
+
+        $product = Product::find($id);
+        if($product == null){
+            return [
+                "message"=> "Product not found",
+                "status_code"=> 404,
+            ];
+        }
+        $fields = $product->getFillable();
+        $errorList = [];
+        foreach ($data as $key => $value) {
+            if(in_array($key, $fields)){
+                $product->$key = $value;
+                continue;
+            }
+            $errorList[] = $key.': unknown field';
+        }
+        if (!empty($errorList)){
+            return [
+                "message"=> $errorList,
+                "status_code"=> 400,
+            ];
+        }
+        $product->save();
+        return [
+            "message"=> "Product updated",
+            "status_code"=> 200,
+        ];
+    }
 }
