@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductCreationRequest;
 use App\Models\Product;
 use App\Services\Product\ProductService;
 use Illuminate\Http\JsonResponse;
@@ -14,8 +15,8 @@ class ProductController extends Controller
     public function __construct(){
         $this->productService = new ProductService();
     }
-    public function create(Request $request): JsonResponse{
-        $body  = $request->all();
+    public function create(ProductCreationRequest $request): JsonResponse{
+        $body  = $request->validated();
 
         return response()->json($this->productService->create($body["name"], $body["price"], $body['stock'], $body["category"]));
     }
