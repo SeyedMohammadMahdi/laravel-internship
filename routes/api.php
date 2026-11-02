@@ -43,7 +43,7 @@ Route::get('/userList', [Controllers\UserController::class, 'userList']);
 
 Route::get('getProducts/{id?}', [Controllers\ProductController::class, 'getProducts']);
 Route::get('filterProducts', [Controllers\ProductController::class, 'filterProducts']);
-
+Route::post("/products/create", [Controllers\Product\ProductController::class, 'create']);
 
 #####################################
 #   Notification API
