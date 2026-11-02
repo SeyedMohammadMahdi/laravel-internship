@@ -63,4 +63,24 @@ class ProductService
             "category"=> $product->category,
         ];
     }
+
+    public function delete(int $id = null): array{
+        if ($id == null){
+            return [
+                "message"=> "Product not found",
+                "status_code"=> 404,
+            ];
+        }
+        $deleted = Product::destroy($id);
+        if ($deleted === 0) {
+            return [
+                "message"=> "Product not found",
+                "status_code"=> 404,
+            ];
+        }
+        return [
+            "message"=> "product deleted",
+            "status_code"=> 200,
+        ];
+    }
 }

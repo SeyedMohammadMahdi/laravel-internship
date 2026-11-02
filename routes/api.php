@@ -45,6 +45,7 @@ Route::get('getProducts/{id?}', [Controllers\ProductController::class, 'getProdu
 Route::get('filterProducts', [Controllers\ProductController::class, 'filterProducts']);
 Route::post("/products/create", [Controllers\Product\ProductController::class, 'createProduct']);
 Route::get("/products/get/{id?}", [Controllers\Product\ProductController::class, 'getProducts']);
+Route::delete("/products/delete/{id}", [Controllers\Product\ProductController::class, 'deleteProduct']);
 #####################################
 #   Notification API
 #####################################

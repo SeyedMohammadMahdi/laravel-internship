@@ -17,11 +17,16 @@ class ProductController extends Controller
     }
     public function createProduct(ProductCreationRequest $request): JsonResponse{
         $body  = $request->validated();
-
-        return response()->json($this->productService->create($body["name"], $body["price"], $body['stock'], $body["category"]));
+        $resp = $this->productService->create($body["name"], $body["price"], $body['stock'], $body["category"]);
+        return response()->json($resp, $resp["status_code"]);
     }
 
     public function getProducts(Request $request, int $id =null): JsonResponse{
         return response()->json($this->productService->get($id));
+    }
+
+    public function deleteProduct(Request $request, int $id = null): JsonResponse{
+        $resp = $this->productService->delete($id);
+        return response()->json($resp, $resp["status_code"]);
     }
 }
