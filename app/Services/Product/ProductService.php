@@ -32,4 +32,35 @@ class ProductService
             ]
         ];
     }
+
+    public function get(int $id = null): array{
+        if ($id == null){
+            $products = Product::all();
+            $list = [];
+            foreach ($products as $product){
+                $list[] = [
+                    "id"=> $product->id,
+                    "name"=> $product->name,
+                    "price"=> $product->price,
+                    "stock"=> $product->stock,
+                    "category"=> $product->category,
+                ];
+            }
+            return $list;
+        }
+        $product = Product::find($id);
+        if($product == null){
+            return [
+                "message"=> "Product not found",
+                "status"=> false,
+            ];
+        }
+        return [
+            "id"=> $product->id,
+            "name"=> $product->name,
+            "price"=> $product->price,
+            "stock"=> $product->stock,
+            "category"=> $product->category,
+        ];
+    }
 }

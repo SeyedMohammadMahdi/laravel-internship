@@ -15,9 +15,13 @@ class ProductController extends Controller
     public function __construct(){
         $this->productService = new ProductService();
     }
-    public function create(ProductCreationRequest $request): JsonResponse{
+    public function createProduct(ProductCreationRequest $request): JsonResponse{
         $body  = $request->validated();
 
         return response()->json($this->productService->create($body["name"], $body["price"], $body['stock'], $body["category"]));
+    }
+
+    public function getProducts(Request $request, int $id =null): JsonResponse{
+        return response()->json($this->productService->get($id));
     }
 }
