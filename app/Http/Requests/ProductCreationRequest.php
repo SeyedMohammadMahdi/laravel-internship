@@ -18,10 +18,10 @@ class ProductCreationRequest extends FormRequest
     public function rules(): array
     {
         return [
-                "name"=> "required|string|between:10,255",
+                "name"=> "required|string|between:3,255",
                 "price"=> "required|numeric|between:0,1000",
                 "stock"=> "required|integer|min:0",
-                "category"=> "required|string|between:10,100",
+                "category"=> "required|string|between:3,100",
         ];
     }
 }

@@ -3,50 +3,30 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use App\Repositories\Product\ProductRepository;
+use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ProductFilterService
 {
 
+    private ProductRepositoryInterface $productRepository;
+
+    public function __construct() {
+        $this->productRepository = app(ProductRepositoryInterface::class);
+    }
     public function filter(?string $name=null, ?string $category = null, ?bool $is_available = null, ?float $min_price = null, ?float $max_price = null): array{
-        $table = (new Product())->getTable();
-        $query = DB::table($table);
-        if($name){
-            $query->where("name", "like", "%".$name."%");
-        }
 
-        if($category){
-            $query->where("category", "like", "%".$category."%");
-        }
-
-        if($is_available){
-            $query->where("stock", ">", 0);
-        }
-        if($min_price){
-            $query->where("price", ">=", $min_price);
-        }
-        if($max_price){
-            $query->where("price", "<=", $max_price);
-        }
-
-        $output = $query->get();
+        $output = $this->productRepository->filter($name, $category, $is_available, $min_price, $max_price);
         if($output->isEmpty()){
             return [
                 "message" => "No products found.",
-                "status_code" => 404
+                "status_code" => 404,
+                "output" => $name
             ];
         }
-        $response = [];
-        foreach($output as $item){
-            $response[] = [
-                "id" => $item->id,
-                "name" => $item->name,
-                "category" => $item->category,
-                "stock" => $item->stock,
-                "price" => $item->price,
-            ];
-        }
-        return $response;
+
+        return $output->toArray();
     }
 }

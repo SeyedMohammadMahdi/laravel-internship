@@ -3,9 +3,18 @@
 namespace App\Services\Product;
 
 use App\Models\Product;
+use App\Repositories\Product\ProductRepository;
+use App\Repositories\Product\ProductRepositoryInterface;
 
 class ProductCRUDService
 {
+
+    private ProductRepositoryInterface $productRepository;
+    public function __construct()
+    {
+        $this->productRepository = app(ProductRepositoryInterface::class);
+    }
+
     public function create(string $name = null, float $price = null, int $stock = null, string $category = null): array{
         if ($name == null || $price == null || $stock == null || $category == null) {
             return [
@@ -16,39 +25,38 @@ class ProductCRUDService
                 'status_code'=> 400
             ];
         }
-        $product = Product::create([
-            'name' => $name,
-            'price' => $price,
-            'stock' => $stock,
-            'category' => $category
-        ]);
-        return [
-            "status" => true,
-            "message"=> "Product created",
-            'status_code'=> 200,
-            "data"=> [
-                "name"=> $name,
-                "id"=> $product->id,
-            ]
-        ];
+
+        return $this->productRepository->create($name, $category, $price, $stock);
     }
 
-    public function get(int $id = null): array{
+    public function get(?int $id = null): array{
         if ($id == null){
-            $products = Product::all();
-            $list = [];
-            foreach ($products as $product){
-                $list[] = [
-                    "id"=> $product->id,
-                    "name"=> $product->name,
-                    "price"=> $product->price,
-                    "stock"=> $product->stock,
-                    "category"=> $product->category,
+//            $products = Product::all();
+//            $list = [];
+//            foreach ($products as $product){
+//                $list[] = [
+//                    "id"=> $product->id,
+//                    "name"=> $product->name,
+//                    "price"=> $product->price,
+//                    "stock"=> $product->stock,
+//                    "category"=> $product->category,
+//                ];
+//            }
+//            return $list;
+            $output = $this->productRepository->all();
+            if($output->count() === 0){
+                return [
+                    "message" => "No product found",
+                    "status_code" => 404
                 ];
             }
-            return $list;
+            return [
+                "message" => "Products found",
+                "status_code" => 200,
+                "data" => $output->toArray()
+            ];
         }
-        $product = Product::find($id);
+        $product = $this->productRepository->find($id);
         if($product == null){
             return [
                 "message"=> "Product not found",
@@ -56,11 +64,9 @@ class ProductCRUDService
             ];
         }
         return [
-            "id"=> $product->id,
-            "name"=> $product->name,
-            "price"=> $product->price,
-            "stock"=> $product->stock,
-            "category"=> $product->category,
+            "message"=> "Product found",
+            "status_code" => 200,
+            "data" => $product
         ];
     }
 
@@ -71,7 +77,7 @@ class ProductCRUDService
                 "status_code"=> 404,
             ];
         }
-        $deleted = Product::destroy($id);
+        $deleted = $this->productRepository->delete($id);
         if ($deleted === 0) {
             return [
                 "message"=> "Product not found",
@@ -87,23 +93,17 @@ class ProductCRUDService
     public function update(array $data, int $id = null): array{
         if ($id == null){
             return [
-                "message"=> "Product not found",
-                "status_code"=> 404,
+                "message"=> "Product id should not be empty",
+                "status_code"=> 400,
             ];
         }
 
-        $product = Product::find($id);
-        if($product == null){
-            return [
-                "message"=> "Product not found",
-                "status_code"=> 404,
-            ];
-        }
-        $fields = $product->getFillable();
+        $fields = new Product()->getFillable();
         $errorList = [];
+        $update_list = [];
         foreach ($data as $key => $value) {
             if(in_array($key, $fields)){
-                $product->$key = $value;
+                $update_list[$key] = $value;
                 continue;
             }
             $errorList[] = $key.': unknown field';
@@ -114,7 +114,13 @@ class ProductCRUDService
                 "status_code"=> 400,
             ];
         }
-        $product->save();
+        $count = $this->productRepository->update($id, ...$update_list);
+        if ($count === 0){
+            return [
+                "message"=> "Product not found",
+                "status_code"=> 404,
+            ];
+        }
         return [
             "message"=> "Product updated",
             "status_code"=> 200,
