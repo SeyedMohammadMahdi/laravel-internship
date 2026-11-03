@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ProductCreationRequest;
-use App\Http\Requests\ProductFilterRequest;
+use App\Http\Requests\Product\ProductCreationRequest;
+use App\Http\Requests\Product\ProductDeleteRequest;
+use App\Http\Requests\Product\ProductFilterRequest;
 use App\Services\Product\ProductCRUDService;
 use App\Services\Product\ProductFilterService;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +29,7 @@ class ProductController extends Controller
         return response()->json($this->productService->get($id));
     }
 
-    public function deleteProduct(Request $request, int $id = null): JsonResponse{
+    public function deleteProduct(ProductDeleteRequest $request, int $id = null): JsonResponse{
         $resp = $this->productService->delete($id);
         return response()->json($resp, $resp["status_code"]);
     }
