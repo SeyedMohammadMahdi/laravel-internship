@@ -16,10 +16,12 @@ class ProductDeleteRequest extends FormRequest
         ];
     }
 
-    public function validationData(): array
+    public function prepareForValidation()
     {
-        return array_merge($this->all(), [
-            'id' => $this->route('id'),
-        ]);
+        if($this->route("id")){
+            $this->merge([
+                "id" => $this->route("id")
+            ]);
+        }
     }
 }

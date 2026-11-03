@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductCreationRequest;
 use App\Http\Requests\Product\ProductDeleteRequest;
 use App\Http\Requests\Product\ProductFilterRequest;
+use App\Http\Requests\Product\ProductGetRequest;
 use App\Services\Product\ProductCRUDService;
 use App\Services\Product\ProductFilterService;
 use Illuminate\Http\JsonResponse;
@@ -25,7 +26,7 @@ class ProductController extends Controller
         return response()->json($resp, $resp["status_code"]);
     }
 
-    public function getProducts(Request $request, int $id =null): JsonResponse{
+    public function getProducts(ProductGetRequest $request, int $id =null): JsonResponse{
         return response()->json($this->productService->get($id));
     }
 
