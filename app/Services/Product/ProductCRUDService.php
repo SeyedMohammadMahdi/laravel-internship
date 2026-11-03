@@ -4,7 +4,7 @@ namespace App\Services\Product;
 
 use App\Models\Product;
 
-class ProductService
+class ProductCRUDService
 {
     public function create(string $name = null, float $price = null, int $stock = null, string $category = null): array{
         if ($name == null || $price == null || $stock == null || $category == null) {

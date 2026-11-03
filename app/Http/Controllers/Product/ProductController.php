@@ -4,16 +4,19 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductCreationRequest;
-use App\Models\Product;
-use App\Services\Product\ProductService;
+use App\Http\Requests\ProductFilterRequest;
+use App\Services\Product\ProductCRUDService;
+use App\Services\Product\ProductFilterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    private ProductService $productService;
+    private ProductCRUDService $productService;
+    private ProductFilterService $productFilterService;
     public function __construct(){
-        $this->productService = new ProductService();
+        $this->productService = new ProductCRUDService();
+        $this->productFilterService = new ProductFilterService();
     }
     public function createProduct(ProductCreationRequest $request): JsonResponse{
         $body  = $request->validated();
@@ -34,5 +37,10 @@ class ProductController extends Controller
         $body = $request->json()->all();
         $resp = $this->productService->update($body["data"], $body["id"]);
         return response()->json($resp, $resp["status_code"]);
+    }
+
+    public function filterProducts(ProductFilterRequest $request): JsonResponse{
+        $body = $request->validated();
+        return response()->json($this->productFilterService->filter($body["name"] ?? null, $body["category"] ?? null, $body["is_available"] ?? null, $body["min_price"] ?? null, $body["max_price"] ?? null));
     }
 }
