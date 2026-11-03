@@ -11,15 +11,14 @@ use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Services\Product\ProductCRUDService;
 use App\Services\Product\ProductFilterService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     private ProductCRUDService $productService;
     private ProductFilterService $productFilterService;
     public function __construct(){
-        $this->productService = new ProductCRUDService();
-        $this->productFilterService = new ProductFilterService();
+        $this->productService = app(ProductCRUDService::class);
+        $this->productFilterService = app(ProductFilterService::class);
     }
     public function createProduct(ProductCreationRequest $request): JsonResponse{
         $body  = $request->validated();
