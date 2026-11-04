@@ -25,16 +25,15 @@ class OrderRepository implements OrderRepositoryInterface
             'updated_at' => now()
         ]);
 
-        $items_created = true;
+        $rows = [];
         foreach ($items as $item) {
-            $order_item_created = DB::table($this->order_item_table)->insert([
+            $rows[] = [
                 "order_id" => $order_created,
                 "product_id" => $item["id"],
                 "quantity" => $item["amount"],
-            ]);
-            $items_created = $items_created && $order_item_created;
+            ];
         }
-
+        $items_created = DB::table($this->order_item_table)->insert($rows);
         return  is_int($order_created) and $items_created;
     }
 
