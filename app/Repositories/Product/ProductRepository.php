@@ -99,4 +99,9 @@ class ProductRepository implements ProductRepositoryInterface
         }
         return $query->get();
     }
+
+    function getMultipleByIds(array $ids)
+    {
+        return DB::table($this->table)->whereIn("id", $ids)->get();
+    }
 }

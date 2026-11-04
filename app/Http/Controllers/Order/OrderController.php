@@ -17,7 +17,7 @@ class OrderController extends Controller
     }
     public function create(Request $request): JsonResponse {
         $body = $request->json()->all();
-        return response()->json($this->orderService->createOrder($body["product_id"], $body["customer_name"], $body["count"]));
+        return response()->json($this->orderService->createOrder($body["items"], $body["customer_name"]));
 
     }
 

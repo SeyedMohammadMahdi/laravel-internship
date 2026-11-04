@@ -17,49 +17,75 @@ class OrderService
         $this->orderRepository = app(OrderRepositoryInterface::class);
         $this->productRepository = app(ProductRepositoryInterface::class);
     }
-    public function createOrder(int $productId, string $customerName, int $totalAmount) {
-        $product = $this->productRepository->find($productId);
-        if ($product === null) {
+    public function createOrder(array $items, string $customerName) {
+        $product_ids = array_column($items, 'id');
+        $products_info = $this->productRepository->getMultipleByIds($product_ids);
+        $products_infoByKey = $products_info->keyBy('id');
+        if ($products_infoByKey->isEmpty()) {
             return [
-                "message" => "Product not found",
-                "status_code" => 404,
+                "message"=>"no products found",
+                "status_code"=>404,
             ];
         }
-
-        if ($product->stock < $totalAmount) {
-            return [
-                "message" => "Product out of stock",
-                "status_code" => 400,
-            ];
+        $errorList = [];
+        $totalAmount = 0;
+        foreach($items as $item){
+            $product = $products_infoByKey->get($item['id']);
+            if(!$product) {
+                $errorList[] = [
+                    "message" => "no product found with id " . $item['id'],
+                    "status_code" => 404,
+                ];
+                continue;
+            }
+            if ($product->stock < $item['amount']) {
+                $errorList[] = [
+                    "message" => "stock is out of stock " . $item['id'] . ": " . $item['amount'],
+                    "status_code" => 400,
+                ];
+            }
+            $totalAmount += $item['amount'];
         }
 
+        if (count($errorList) > 0) {
+            return [
+                "message"=>"error while creating order",
+                "status_code"=>400,
+                "errors"=> $errorList
+            ];
+        }
 
         try {
-            DB::transaction(function () use ($product, $productId, $customerName, $totalAmount) {
-                $isCreated = $this->orderRepository->create($productId, $customerName, "completed", $totalAmount);
-                $updated = $this->productRepository->update($productId, null, null, null, 0);
-                if (($updated > 1 or $updated === 0) or $isCreated === false) {
-                    throw new \RuntimeException("order cannot be processed");
+            DB::transaction(function () use ($items, $products_infoByKey,$customerName, $totalAmount) {
+                $isCreated = $this->orderRepository->create($items, $customerName, "completed", $totalAmount);
+                foreach($items as $item){
+                    $product = $products_infoByKey->get($item['id']);
+                    $this->productRepository->update($item['id'], null, null, null, $product->stock-$totalAmount);
                 }
-
-                return true;
+                if ($isCreated === false) {
+                    throw new \Exception("error while creating order");
+                }
             });
         } catch (\Exception $e ) {
             return [
                 "message" => "Order not created",
                 "status_code" => 400,
+                "error" => $e->getMessage()
             ];
         }
-
+        $data = [];
+        foreach ($products_info as $product) {
+            $data[] = [
+                "id" => $product->id,
+                "name" => $product->name,
+                "price" => $product->price,
+            ];
+        }
         return [
             "message" => "Order created",
             "status_code" => 201,
             "total_price"=> $totalAmount * $product->price,
-            "data" => [
-                "id" => $productId,
-                "name"=>$product->name,
-                "price"=>$product->price,
-            ],
+            "data" => $data,
         ];
 
     }
