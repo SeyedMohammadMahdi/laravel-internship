@@ -26,8 +26,12 @@ class ProductController extends Controller
         return response()->json($resp, $resp["status_code"]);
     }
 
-    public function getProducts(ProductGetRequest $request, int $id =null): JsonResponse{
-        return response()->json($this->productService->get($id));
+    public function getProducts(ProductGetRequest $request): JsonResponse{
+        $data = $request->validated();
+        $id = $data['id'] ?? null;
+        $page = $data['page'] ?? 1;
+        $perPage = $data['perPage'] ?? 10;
+        return response()->json($this->productService->get($id, $page, $perPage));
     }
 
     public function deleteProduct(ProductDeleteRequest $request, int $id = null): JsonResponse{
