@@ -7,7 +7,8 @@ interface OrderRepositoryInterface
 
     public function getAll();
 
-    public function getById($id);
+    public function OrderWithItems();
+
 
 //    public function paginate(int $page, int $limit);
 

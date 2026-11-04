@@ -37,7 +37,7 @@ class OrderService
         try {
             DB::transaction(function () use ($product, $productId, $customerName, $totalAmount) {
                 $isCreated = $this->orderRepository->create($productId, $customerName, "completed", $totalAmount);
-                $updated = $this->productRepository->update($productId, null, null, null, 0);
+                $updated = $this->productRepository->update($productId, null, null, null, $product->stock-$totalAmount);
                 if (($updated > 1 or $updated === 0) or $isCreated === false) {
                     throw new \RuntimeException("order cannot be processed");
                 }
@@ -48,6 +48,7 @@ class OrderService
             return [
                 "message" => "Order not created",
                 "status_code" => 400,
+                "error" => $e->getMessage()
             ];
         }
 

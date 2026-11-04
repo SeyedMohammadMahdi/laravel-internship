@@ -3,37 +3,55 @@
 namespace App\Repositories\Order;
 
 use Illuminate\Support\Facades\DB;
+use function Laravel\Prompts\table;
 
 class OrderRepository implements OrderRepositoryInterface
 {
     private string $table;
-    public function __construct(string $table)
+    private string $order_item_table;
+    public function __construct(string $table, string $order_item_table)
     {
         $this->table = $table;
+        $this->order_item_table = $order_item_table;
     }
 
     public function create(int $productId, string $customerName, string $status, float $totalAmount)
     {
-        return DB::table($this->table)->insert([
-            'product_id' => $productId,
+        $order_created = DB::table($this->table)->insertGetId([
             'customer_name' => $customerName,
             'status' => $status,
             'total_amount' => $totalAmount,
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        $order_item_created = DB::table($this->order_item_table)->insert([
+            "order_id" => $order_created,
+            "product_id" => $productId,
+            "quantity" => $totalAmount,
+        ]);
+        return $order_created > 0  and $order_item_created;
     }
 
-    public function getAll(){
+    public function OrderWithItems(){
         return DB::table($this->table)->join("products", "products.id", "=", "$this->table.product_id")->get();
     }
 
-    public function getById($id){
-        return DB::table($this->table)->find($id);
+    public function getAll(){
+        $orders = DB::table($this->table)->get();
+        $order_ids = $orders->pluck("id");
+        $items = DB::table("order__items")->join("products", "products.id", "=", "order__items.product_id")
+            ->whereIn("order_id", $order_ids)
+            ->get()->groupBy("order_id");
+
+        $orders->transform(function ($order) use ($items) {
+            $order->products = $items
+                ->get($order->id, collect())
+                ->values();
+
+            return $order;
+        });
+
+        return $orders;
     }
-
-//    public function paginate(int $page, int $limit){
-//        return DB::table($this->table)->paginate($page, $limit);
-//    }
-
 }
