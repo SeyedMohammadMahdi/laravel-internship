@@ -15,7 +15,7 @@ class OrderRepository implements OrderRepositoryInterface
         $this->order_item_table = $order_item_table;
     }
 
-    public function create(int $productId, string $customerName, string $status, float $totalAmount)
+    public function create(array $items, string $customerName, string $status, float $totalAmount)
     {
         $order_created = DB::table($this->table)->insertGetId([
             'customer_name' => $customerName,
@@ -25,12 +25,17 @@ class OrderRepository implements OrderRepositoryInterface
             'updated_at' => now()
         ]);
 
-        $order_item_created = DB::table($this->order_item_table)->insert([
-            "order_id" => $order_created,
-            "product_id" => $productId,
-            "quantity" => $totalAmount,
-        ]);
-        return $order_created > 0  and $order_item_created;
+        $items_created = true;
+        foreach ($items as $item) {
+            $order_item_created = DB::table($this->order_item_table)->insert([
+                "order_id" => $order_created,
+                "product_id" => $item["id"],
+                "quantity" => $item["amount"],
+            ]);
+            $items_created = $items_created && $order_item_created;
+        }
+
+        return  is_int($order_created) and $items_created;
     }
 
     public function OrderWithItems(){

@@ -11,4 +11,5 @@ interface ProductRepositoryInterface
     public function update(int $id, ?string $name=null, ?string $category=null, ?float $price=null, ?int $stock = null);
     public function delete(int $id);
     public function filter(?string $name=null, ?string $category = null, ?bool $is_available = null, ?float $min_price = null, ?float $max_price = null);
+    public function getMultipleByIds(array $ids);
 }
