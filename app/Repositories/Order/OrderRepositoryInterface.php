@@ -9,4 +9,6 @@ interface OrderRepositoryInterface
 
     public function getById($id);
 
+//    public function paginate(int $page, int $limit);
+
 }

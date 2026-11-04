@@ -25,11 +25,15 @@ class OrderRepository implements OrderRepositoryInterface
     }
 
     public function getAll(){
-        return DB::table($this->table)->get();
+        return DB::table($this->table)->join("products", "products.id", "=", "$this->table.product_id")->get();
     }
 
     public function getById($id){
         return DB::table($this->table)->find($id);
     }
+
+//    public function paginate(int $page, int $limit){
+//        return DB::table($this->table)->paginate($page, $limit);
+//    }
 
 }

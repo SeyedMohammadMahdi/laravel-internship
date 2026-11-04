@@ -63,4 +63,9 @@ class OrderService
         ];
 
     }
+
+    public function getAll(int $page = 1, int $count=10){
+        $orders = $this->orderRepository->getAll();
+        return $orders->toArray();
+    }
 }

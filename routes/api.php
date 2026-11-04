@@ -53,7 +53,7 @@ Route::post("/products/filter", [Controllers\Product\ProductController::class, '
 #   order API
 #####################################
 Route::post("/order/create", [Controllers\Order\OrderController::class, 'create']);
-
+Route::get("/order/get/{id?}", [Controllers\Order\OrderController::class, 'getAll']);
 #####################################
 #   Notification API
 #####################################

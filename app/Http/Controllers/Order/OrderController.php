@@ -20,4 +20,8 @@ class OrderController extends Controller
         return response()->json($this->orderService->createOrder($body["product_id"], $body["customer_name"], $body["count"]));
 
     }
+
+    public function getAll(Request $request): JsonResponse {
+        return response()->json($this->orderService->getAll());
+    }
 }
