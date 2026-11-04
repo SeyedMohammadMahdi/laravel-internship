@@ -21,7 +21,8 @@ class ProductController extends Controller
         $this->productFilterService = app(ProductFilterService::class);
     }
     public function createProduct(ProductCreationRequest $request): JsonResponse{
-        $body  = $request->validated();
+//        $body  = $request->validated();
+        $body = $request->all();
         $resp = $this->productService->create($body["name"], $body["price"], $body['stock'], $body["category"]);
         return response()->json($resp, $resp["status_code"]);
     }

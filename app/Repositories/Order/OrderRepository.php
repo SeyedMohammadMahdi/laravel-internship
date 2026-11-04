@@ -45,7 +45,7 @@ class OrderRepository implements OrderRepositoryInterface
         $orders = DB::table($this->table)->get();
         $order_ids = $orders->pluck("id");
         $items = DB::table("order__items")->join("products", "products.id", "=", "order__items.product_id")
-            ->whereIn("order_id", $order_ids)
+            ->whereIn("order__items.order_id", $order_ids)
             ->get()->groupBy("order_id");
 
         $orders->transform(function ($order) use ($items) {
