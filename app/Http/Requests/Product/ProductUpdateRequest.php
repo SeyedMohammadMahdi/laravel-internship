@@ -15,8 +15,8 @@ class ProductUpdateRequest extends FormRequest
             "data"=> "required|array",
             "data.name"=> "sometimes|string|min:3",
             "data.category"=> "sometimes|string|min:3",
-            "data.price"=> "sometimes|numeric:|min:1",
-            "data.stock"=> "sometimes|integer|min:1",
+            "data.price"=> "sometimes|numeric:|min:0",
+            "data.stock"=> "sometimes|integer|min:0",
         ];
     }
 

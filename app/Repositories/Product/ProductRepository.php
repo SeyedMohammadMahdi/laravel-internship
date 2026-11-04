@@ -21,7 +21,6 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function find(int $id): \stdClass|null
     {
-
         return DB::table($this->table)->find($id);
     }
 
@@ -56,16 +55,16 @@ class ProductRepository implements ProductRepositoryInterface
 
     public function update($id, ?string $name=null, ?string $category=null, ?float $price=null, ?int $stock = null){
         $updates = [];
-        if($name != null){
+        if($name !== null){
             $updates['name'] = $name;
         }
-        if($category != null){
+        if($category !== null){
             $updates['category'] = $category;
         }
-        if($price != null){
+        if($price !== null){
             $updates['price'] = $price;
         }
-        if($stock != null){
+        if($stock !== null){
             $updates['stock'] = $stock;
         }
         $updates['updated_at'] = now();
