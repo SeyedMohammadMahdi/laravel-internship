@@ -29,21 +29,9 @@ class ProductCRUDService
         return $this->productRepository->create($name, $category, $price, $stock);
     }
 
-    public function get(?int $id = null): array{
+    public function get(?int $id = null, int $page = 1, int $perPage = 10): array{
         if ($id == null){
-//            $products = Product::all();
-//            $list = [];
-//            foreach ($products as $product){
-//                $list[] = [
-//                    "id"=> $product->id,
-//                    "name"=> $product->name,
-//                    "price"=> $product->price,
-//                    "stock"=> $product->stock,
-//                    "category"=> $product->category,
-//                ];
-//            }
-//            return $list;
-            $output = $this->productRepository->all();
+            $output = $this->productRepository->all(page: $page, perPage: $perPage);
             if($output->count() === 0){
                 return [
                     "message" => "No product found",
@@ -53,7 +41,11 @@ class ProductCRUDService
             return [
                 "message" => "Products found",
                 "status_code" => 200,
-                "data" => $output->toArray()
+                "data" => $output->getCollection()->toArray(),
+                "last_page" => $output->lastPage(),
+                "current_page" => $output->currentPage(),
+                "total" => $output->total(),
+                "per_page" => $output->perPage(),
             ];
         }
         $product = $this->productRepository->find($id);

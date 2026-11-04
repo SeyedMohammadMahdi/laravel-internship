@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 
 interface ProductRepositoryInterface
 {
-    public function all();
+    public function all(int $page = 1, int $perPage = 10);
     public function find(int $id);
     public function create(string $name, string $category, float $price, int $stock);
     public function update(int $id, ?string $name=null, ?string $category=null, ?float $price=null, ?int $stock = null);

@@ -3,6 +3,7 @@
 namespace App\Repositories\Product;
 
 use App\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -14,9 +15,12 @@ class ProductRepository implements ProductRepositoryInterface
         $this->table = $table;
     }
 
-    public function all(): Collection{
-        $query = DB::table($this->table);
-        return $query->get();
+    public function all(int $page = 1, int $perPage = 10): LengthAwarePaginator{
+//        $h =  DB::table($this->table)->paginate($perPage, ["*"], "page", $page);
+//        $h->lastPage();
+//        $h->perPage()
+//        $h->toArray()
+        return DB::table($this->table)->paginate($perPage, ["*"], "page", $page);
     }
 
     public function find(int $id): \stdClass|null

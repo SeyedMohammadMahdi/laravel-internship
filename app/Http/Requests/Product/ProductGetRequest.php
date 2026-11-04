@@ -13,7 +13,9 @@ class ProductGetRequest extends FormRequest
 
     public function rules(){
         return [
-            'id'=>"sometimes|integer|min:1"
+            'id'=>"sometimes|integer|min:1",
+            "page"=>"sometimes|integer|min:1",
+            "perPage"=>"sometimes|integer|min:1",
         ];
     }
 
