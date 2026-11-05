@@ -16,7 +16,7 @@ class ProductCRUDService
     }
 
     public function create(string $name = null, float $price = null, int $stock = null, string $category = null): array{
-        if ($name == null || $price == null || $stock == null || $category == null) {
+        if ($name === null || $price === null || $stock === null || $category === null) {
             return [
                 [
                 'status' => false,
