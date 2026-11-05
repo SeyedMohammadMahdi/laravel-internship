@@ -103,8 +103,27 @@ class OrderService
 
     }
 
-    public function getAll(int $page = 1, int $count=10){
-        $orders = $this->orderRepository->getAll();
-        return $orders->toArray();
+    public function getAll(int $page = 1, int $perPage=10){
+        $ordersPaginated = $this->orderRepository->getAllPaginated($page, $perPage);
+        $orders_id = $ordersPaginated->getCollection()->pluck('id')->toArray();
+        if ($ordersPaginated->isEmpty()) {
+            return [
+                "message"=>"no orders found",
+                "status_code"=>404,
+                "last_page"=> $ordersPaginated->lastPage(),
+            ];
+        }
+        $items = $this->orderItemRepository->getItemsByOrderId($orders_id);
+        $output = $ordersPaginated->getCollection()->map(function ($order) use ($items){
+           $order->products = $items->get($order->id, collect())->values()->all();
+           return $order;
+        });
+        return [
+            "message"=>"success",
+            "status_code"=>200,
+            "data"=>$output->toArray(),
+            "last_page"=>$ordersPaginated->lastPage(),
+            "current_page"=>$ordersPaginated->currentPage(),
+        ];
     }
 }

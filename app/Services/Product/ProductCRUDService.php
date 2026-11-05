@@ -35,7 +35,8 @@ class ProductCRUDService
             if($output->count() === 0){
                 return [
                     "message" => "No product found",
-                    "status_code" => 404
+                    "status_code" => 404,
+                    "last_page"=> $output->lastPage(),
                 ];
             }
             return [

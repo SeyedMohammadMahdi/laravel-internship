@@ -23,4 +23,10 @@ class OrderItemRepository implements OrderItemRepositoryInterface
         return DB::table($this->table)->insert($rows);
     }
 
+    public function getItemsByOrderId(array $orderIds)
+    {
+        return DB::table("order__items")->join("products", "products.id", "=", "order__items.product_id")
+            ->whereIn("order__items.order_id", $orderIds)->select(["product_id", "name", "quantity", "order__items.order_id"])
+            ->get()->groupBy("order_id");
+    }
 }

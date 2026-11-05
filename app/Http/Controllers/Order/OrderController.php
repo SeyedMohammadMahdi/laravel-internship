@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\OrderGetRequest;
 use App\Models\Order;
 use App\Services\Order\OrderService;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +22,9 @@ class OrderController extends Controller
 
     }
 
-    public function getAll(Request $request): JsonResponse {
-        return response()->json($this->orderService->getAll());
+    public function getAll(OrderGetRequest $request): JsonResponse {
+        $page = $request->input("page", 1);
+        $limit = $request->input("limit", 1);
+        return response()->json($this->orderService->getAll($page, $limit));
     }
 }

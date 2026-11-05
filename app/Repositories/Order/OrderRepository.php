@@ -40,11 +40,17 @@ class OrderRepository implements OrderRepositoryInterface
         return false;
     }
 
-    public function OrderWithItems(){
-        return DB::table($this->table)->join("products", "products.id", "=", "$this->table.product_id")->get();
+//    public function OrderWithItems(){
+//        return DB::table($this->table)->join("products", "products.id", "=", "$this->table.product_id")->get();
+//    }
+
+    public function getAllPaginated(int $page = 1, int $perPage = 10){
+        $orders = DB::table($this->table)
+            ->paginate($perPage, ["*"], 'page', $page);
+        return $orders;
     }
 
-    public function getAll(){
+    public function OrderWithItems(){
         $orders = DB::table($this->table)->get();
         $order_ids = $orders->pluck("id");
         $items = DB::table("order__items")->join("products", "products.id", "=", "order__items.product_id")
