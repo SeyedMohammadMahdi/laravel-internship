@@ -5,4 +5,5 @@ return [
     App\Providers\OrderItemRepositoryProvider::class,
     App\Providers\OrderRepositoryProvider::class,
     App\Providers\ProductRepositoryProvider::class,
+    App\Providers\UserRepositoryProvider::class,
 ];
