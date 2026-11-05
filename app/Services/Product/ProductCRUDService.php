@@ -16,7 +16,7 @@ class ProductCRUDService
     }
 
     public function create(string $name = null, float $price = null, int $stock = null, string $category = null): array{
-        if ($name == null || $price == null || $stock == null || $category == null) {
+        if ($name === null || $price === null || $stock === null || $category === null) {
             return [
                 [
                 'status' => false,
@@ -26,7 +26,18 @@ class ProductCRUDService
             ];
         }
 
-        return $this->productRepository->create($name, $category, $price, $stock);
+        $productCreated = $this->productRepository->create($name, $category, $price, $stock);
+        if (is_int($productCreated)){
+            return [
+                "status_code"=> 201,
+                "message"=> "product created",
+                "id"=> $productCreated
+            ];
+        }
+        return [
+            "status_code"=> 400,
+            "message"=> "product not created"
+        ];
     }
 
     public function get(?int $id = null, int $page = 1, int $perPage = 10): array{
@@ -54,6 +65,7 @@ class ProductCRUDService
             return [
                 "message"=> "Product not found",
                 "status"=> false,
+                "status_code"=> 404,
             ];
         }
         return [
