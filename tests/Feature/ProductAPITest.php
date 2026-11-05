@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -9,7 +10,8 @@ use Tests\TestCase;
 
 class ProductAPITest extends TestCase
 {
-    use RefreshDatabase;
+//    use RefreshDatabase;
+    use DatabaseMigrations;
     #[DataProvider("getProductsDataProvider")]
     public function testGetApi(array $data, int $count, array $query, $status):void{
         $i = 0;
@@ -142,5 +144,120 @@ class ProductAPITest extends TestCase
             "large-dataset-page-1"        => [$data, 100, ["page" => 1, "perPage" => 15], 200],
             "large-dataset-last-page"     => [$data, 100, ["page" => 7, "perPage" => 15], 200],
         ];
+    }
+
+    #[DataProvider("getOneProductDataProvider")]
+    public function testGetOneProduct(array $data, int $index):void {
+        $response = $this->postJson("/api/products/create", $data[$index]);
+        $id = $response->json()['id'];
+
+        $getResponse = $this->getJson("/api/products/get/$id");
+        $getResponse->assertStatus(200)->assertJsonStructure([
+            "data" => []
+        ])->assertJsonPath("data.id", $id);
+    }
+
+    public static function getOneProductDataProvider(): array {
+        $data = [
+            [
+                "name" => "banana",
+                "price" => 100,
+                "category" => "fruit",
+                "stock" => 100
+            ],
+            [
+                "name" => "headphones",
+                "price" => 999.99,
+                "category" => "electronics",
+                "stock" => 50
+            ],
+            [
+                "name" => "abc",
+                "price" => 100,
+                "category" => "fruit",
+                "stock" => 100
+            ],
+            [
+                "name" => str_repeat("a", 255),
+                "price" => 100,
+                "category" => "fruit",
+                "stock" => 100
+            ],
+            [
+                "name" => "free-item",
+                "price" => 0,
+                "category" => "fruit",
+                "stock" => 100
+            ],
+            [
+                "name" => "expensive-item",
+                "price" => 1000,
+                "category" => "electronics",
+                "stock" => 10
+            ],
+            [
+                "name" => "out-of-stock-item",
+                "price" => 100,
+                "category" => "fruit",
+                "stock" => 0
+            ],
+            [
+                "name" => "bulk-item",
+                "price" => 10,
+                "category" => "wholesale",
+                "stock" => 1000000
+            ],
+            [
+                "name" => "item",
+                "price" => 100,
+                "category" => "abc",
+                "stock" => 100
+            ],
+            [
+                "name" => "item",
+                "price" => 100,
+                "category" => str_repeat("c", 100),
+                "stock" => 100
+            ],
+            [
+                "name" => "abc",
+                "price" => 0,
+                "category" => "xyz",
+                "stock" => 0
+            ],
+            [
+                "name" => str_repeat("n", 255),
+                "price" => 1000,
+                "category" => str_repeat("c", 100),
+                "stock" => 999999
+            ],
+            [
+                "name" => "precision-item",
+                "price" => 99.99,
+                "category" => "electronics",
+                "stock" => 100
+            ],
+            [
+                "name" => "precise-price",
+                "price" => 123.456,
+                "category" => "electronics",
+                "stock" => 100
+            ],
+        ];
+        return [
+            "product-1" => [$data, 0],
+            "product-2" => [$data, 1],
+            "product-3" => [$data, 2],
+            "product-4" => [$data, 3],
+            "product-5" => [$data, 4],
+            "product-6" => [$data, 5],
+            "product-7" => [$data, 6],
+            "product-8" => [$data, 7],
+            "product-9" => [$data, 8],
+            "product-10" => [$data, 9],
+            "product-11" => [$data, 10],
+        ]
+            ;
+
     }
 }

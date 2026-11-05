@@ -26,7 +26,18 @@ class ProductCRUDService
             ];
         }
 
-        return $this->productRepository->create($name, $category, $price, $stock);
+        $productCreated = $this->productRepository->create($name, $category, $price, $stock);
+        if (is_int($productCreated)){
+            return [
+                "status_code"=> 200,
+                "message"=> "product created",
+                "id"=> $productCreated
+            ];
+        }
+        return [
+            "status_code"=> 400,
+            "message"=> "product not created"
+        ];
     }
 
     public function get(?int $id = null, int $page = 1, int $perPage = 10): array{

@@ -28,10 +28,10 @@ class ProductRepository implements ProductRepositoryInterface
         return DB::table($this->table)->find($id);
     }
 
-    public function create(string $name, string $category, float $price, int $stock): array
+    public function create(string $name, string $category, float $price, int $stock): int|bool
     {
         try {
-            $is_created = DB::table($this->table)->insert([
+             return DB::table($this->table)->insertGetId([
                 'name' => $name,
                 'category' => $category,
                 'price' => $price,
@@ -39,21 +39,19 @@ class ProductRepository implements ProductRepositoryInterface
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            if ($is_created) {
-                return [
-                    "message" => "Product created.",
-                    "status_code" => 201
-                ];
-            }
-            return [
-                "message" => "Product not created.",
-                "status_code" => 400
-            ];
+//            if (is_int($createdProduct)) {
+//                return [
+//                    "message" => "Product created.",
+//                    "status_code" => 201,
+//                    "id" => $createdProduct
+//                ];
+//            }
+//            return [
+//                "message" => "Product not created.",
+//                "status_code" => 400
+//            ];
         }catch (\Exception $exception){
-            return [
-                "message" => $exception->getMessage(),
-                "status_code" => 500
-            ];
+            return false;
         }
     }
 
