@@ -25,16 +25,19 @@ class OrderRepository implements OrderRepositoryInterface
             'updated_at' => now()
         ]);
 
-        $rows = [];
-        foreach ($items as $item) {
-            $rows[] = [
-                "order_id" => $order_created,
-                "product_id" => $item["id"],
-                "quantity" => $item["amount"],
-            ];
+//        $rows = [];
+//        foreach ($items as $item) {
+//            $rows[] = [
+//                "order_id" => $order_created,
+//                "product_id" => $item["id"],
+//                "quantity" => $item["amount"],
+//            ];
+//        }
+//        $items_created = DB::table($this->order_item_table)->insert($rows);
+        if (is_int($order_created)) {
+            return $order_created;
         }
-        $items_created = DB::table($this->order_item_table)->insert($rows);
-        return  is_int($order_created) and $items_created;
+        return false;
     }
 
     public function OrderWithItems(){
@@ -48,13 +51,18 @@ class OrderRepository implements OrderRepositoryInterface
             ->whereIn("order__items.order_id", $order_ids)->select(["product_id", "name", "quantity", "order__items.order_id"])
             ->get()->groupBy("order_id");
 
-        $orders->transform(function ($order) use ($items) {
-            $order->products = $items
-                ->get($order->id, collect())->values()->all();
+//        $orders->transform(function ($order) use ($items) {
+//            $order->products = $items
+//                ->get($order->id, collect())->values()->all();
+//
+//            return $order;
+//        });
 
+        $output = $orders->map(function ($order) use ($items){
+            $order->products = $items->get($order->id, collect())->values()->all();
             return $order;
         });
 
-        return $orders;
+        return $output;
     }
 }

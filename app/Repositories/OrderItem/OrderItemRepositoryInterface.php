@@ -1,4 +1,7 @@
 <?php
 
 namespace App\Repositories\OrderItem;
-interface OrderRepositoryInterface {}
+interface OrderItemRepositoryInterface {
+
+    public function create(array $items, int $orderId);
+}
