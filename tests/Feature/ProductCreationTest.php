@@ -42,7 +42,6 @@ class ProductCreationTest extends TestCase
                 201
             ],
 
-            // Name boundaries (2)
             "valid-name-min-length-3" => [
                 [
                     "name" => "abc",
