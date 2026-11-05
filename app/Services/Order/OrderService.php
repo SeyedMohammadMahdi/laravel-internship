@@ -29,6 +29,7 @@ class OrderService
         }
         $errorList = [];
         $totalAmount = 0;
+        $totalPrice = 0;
         foreach($items as $item){
             $product = $products_infoByKey->get($item['id']);
             if(!$product) {
@@ -45,6 +46,7 @@ class OrderService
                 ];
             }
             $totalAmount += $item['amount'];
+            $totalPrice += $item['amount'] * $product->price;
         }
 
         if (count($errorList) > 0) {
@@ -56,11 +58,11 @@ class OrderService
         }
 
         try {
-            DB::transaction(function () use ($items, $products_infoByKey,$customerName, $totalAmount) {
-                $isCreated = $this->orderRepository->create($items, $customerName, "completed", $totalAmount);
+            DB::transaction(function () use ($items, $products_infoByKey,$customerName, $totalPrice) {
+                $isCreated = $this->orderRepository->create($items, $customerName, "completed", $totalPrice);
                 foreach($items as $item){
                     $product = $products_infoByKey->get($item['id']);
-                    $this->productRepository->update($item['id'], null, null, null, $product->stock-$totalAmount);
+                    $this->productRepository->update($item['id'], null, null, null, $product->stock-$item["amount"]);
                 }
                 if ($isCreated === false) {
                     throw new \Exception("error while creating order");
