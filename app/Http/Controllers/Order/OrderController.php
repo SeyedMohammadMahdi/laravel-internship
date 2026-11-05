@@ -25,6 +25,7 @@ class OrderController extends Controller
     public function getAll(OrderGetRequest $request): JsonResponse {
         $page = $request->input("page", 1);
         $limit = $request->input("limit", 1);
-        return response()->json($this->orderService->getAll($page, $limit));
+        $resp = $this->orderService->getAll($page, $limit);
+        return response()->json($resp, $resp["status_code"]);
     }
 }

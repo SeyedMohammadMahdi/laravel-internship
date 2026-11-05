@@ -104,6 +104,12 @@ class OrderService
     }
 
     public function getAll(int $page = 1, int $perPage=10){
+        if($page < 1 || $perPage < 1){
+            return [
+                "message"=>"invalid page number",
+                "status_code"=>422,
+            ];
+        }
         $ordersPaginated = $this->orderRepository->getAllPaginated($page, $perPage);
         $orders_id = $ordersPaginated->getCollection()->pluck('id')->toArray();
         if ($ordersPaginated->isEmpty()) {
