@@ -29,7 +29,7 @@ class ProductCRUDService
         $productCreated = $this->productRepository->create($name, $category, $price, $stock);
         if (is_int($productCreated)){
             return [
-                "status_code"=> 200,
+                "status_code"=> 201,
                 "message"=> "product created",
                 "id"=> $productCreated
             ];
@@ -65,6 +65,7 @@ class ProductCRUDService
             return [
                 "message"=> "Product not found",
                 "status"=> false,
+                "status_code"=> 404,
             ];
         }
         return [

@@ -13,7 +13,7 @@ class ProductAPITest extends TestCase
 //    use RefreshDatabase;
     use DatabaseMigrations;
     #[DataProvider("getProductsDataProvider")]
-    public function testGetApi(array $data, int $count, array $query, $status):void{
+    public function testGetApiPagination(array $data, int $count, array $query, $status):void{
         $i = 0;
         foreach($data as $product){
             if ($i === $count){
