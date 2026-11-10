@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\user\GetUserRequest;
 use App\Http\Requests\user\UpdateUserRequest;
 use App\Http\Requests\user\UserCreateRequest;
 use App\Services\User\UserService;
@@ -29,9 +30,9 @@ class UserController extends Controller
         return response()->json($resp, $resp["status_code"]);
     }
 
-    public function getUser(Request $request): JsonResponse {
-        $data = $request->query("id", null);
-        $resp = $this->userService->get($data);
+    public function getUser(GetUserRequest $request): JsonResponse {
+        $user = $request->user;
+        $resp = $this->userService->get($user->id);
         return response()->json($resp, $resp["status_code"]);
     }
 
