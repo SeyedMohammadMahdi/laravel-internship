@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\UserRegistered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers;
@@ -75,3 +76,14 @@ Route::post('/user', [Controllers\User\UserController::class, 'createUser']);
 Route::put("/user", [Controllers\User\UserController::class, 'updateUser']);
 Route::get("/user", [Controllers\User\UserController::class, 'getUser']);
 Route::delete("/user", [Controllers\User\UserController::class, 'deleteUser']);
+
+
+#####################################
+#   test events
+#####################################
+
+Route::get("/test", function () {
+    Log::info('Dispatching TestEvent');
+    UserRegistered::dispatch();
+    return "event dispatched";
+});
