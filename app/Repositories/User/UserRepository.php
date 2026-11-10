@@ -4,6 +4,7 @@ namespace App\Repositories\User;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use function Laravel\Prompts\select;
 
 class UserRepository implements UserRepositoryInterface
 {
@@ -50,5 +51,15 @@ class UserRepository implements UserRepositoryInterface
         }
 
         return DB::table($this->table)->where('id', $id)->update($updates);
+    }
+
+    public function get(int $id)
+    {
+        return DB::table($this->table)->select(["id", "name", "email"])->where('id', $id)->first();
+    }
+
+    public function getAll()
+    {
+        return DB::table($this->table)->select(["id", "name", "email"])->get();
     }
 }

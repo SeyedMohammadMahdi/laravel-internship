@@ -4,6 +4,10 @@ namespace App\Services\User;
 
 use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
+use Illuminate\Container\EntryNotFoundException;
+use Illuminate\Contracts\Container\CircularDependencyException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class UserService
 {
@@ -37,6 +41,41 @@ class UserService
         return [
             "message" => "User update Failed.",
             "status_code" => 500,
+        ];
+    }
+
+//    /**
+//     * @throws CircularDependencyException
+//     * @throws EntryNotFoundException
+//     * @throws NotFoundExceptionInterface
+//     * @throws ContainerExceptionInterface
+//     */
+    public function get(?int $id=null): array {
+        if(is_null($id)) {
+            $users = $this->userRepository->getAll();
+            if ($users->count() === 0) {
+                return [
+                    "message" => "No users found.",
+                    "status_code" => 404,
+                ];
+            }
+            return [
+                "message" => "User found.",
+                "status_code" => 200,
+                "data" => $users->toArray(),
+            ];
+        }
+        $user = $this->userRepository->get($id);
+        if (is_null($user)) {
+            return [
+                "message" => "User not found.",
+                "status_code" => 404,
+            ];
+        }
+        return [
+            "message" => "User retrieved successfully.",
+            "status_code" => 200,
+            "data" => $user,
         ];
     }
 

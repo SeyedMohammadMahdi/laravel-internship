@@ -73,3 +73,4 @@ Route::post('/calculatePrice', [Controllers\ProductController::class, 'calculate
 
 Route::post('/user', [Controllers\User\UserController::class, 'createUser']);
 Route::put("/user", [Controllers\User\UserController::class, 'updateUser']);
+Route::get("/user", [Controllers\User\UserController::class, 'getUser']);
