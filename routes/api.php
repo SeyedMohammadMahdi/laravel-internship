@@ -66,3 +66,10 @@ Route::post('sendNotification', [Controllers\NotificationController::class, 'sen
 ####################################
 
 Route::post('/calculatePrice', [Controllers\ProductController::class, 'calculateDiscount']);
+
+####################################
+#   User API
+####################################
+
+Route::post('/user', [Controllers\User\UserController::class, 'createUser']);
+Route::put("/user", [Controllers\User\UserController::class, 'updateUser']);
