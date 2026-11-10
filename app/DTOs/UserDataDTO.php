@@ -14,12 +14,22 @@ readonly class UserDataDTO
     {}
 
     public function toArray(): array {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'status' => $this->status,
-            'password' => $this->password,
-        ];
+        $output = [];
+        if (!is_null($this->id)) {
+            $output['id'] = $this->id;
+        }
+        if (!is_null($this->name)) {
+            $output['name'] = $this->name;
+        }
+        if (!is_null($this->email)) {
+            $output['email'] = $this->email;
+        }
+        if (!is_null($this->status)) {
+            $output['status'] = $this->status;
+        }
+        if (!is_null($this->password)) {
+            $output['password'] = $this->password;
+        }
+        return $output;
     }
 }

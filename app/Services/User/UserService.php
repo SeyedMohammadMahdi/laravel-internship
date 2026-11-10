@@ -7,6 +7,7 @@ use App\Repositories\User\UserRepository;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Container\EntryNotFoundException;
 use Illuminate\Contracts\Container\CircularDependencyException;
+use Illuminate\Support\Facades\Hash;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -52,9 +53,15 @@ class UserService
             "status_code" => 400
         ];
     }
-    public function update(int $id, ?string $name = null, ?string $email = null, ?string $status = null): array {
-
-        $updated = $this->userRepository->update($id, name: $name, email: $email, status: $status);
+    public function update(UserDataDTO $user): array {
+        $dbUser = $this->userRepository->get($user->id);
+        $userTOUpdate = new UserDataDTO(
+            $user->id,
+            $user->name ?? $dbUser->name,
+            $user->email ?? $dbUser->email,
+            $user->password !== null ? Hash::make($user->password):$dbUser->password,
+        );
+        $updated = $this->userRepository->update($userTOUpdate);
         if ($updated > 0) {
             return [
                 "message" => "User updated successfully.",

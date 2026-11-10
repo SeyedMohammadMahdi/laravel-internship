@@ -46,39 +46,47 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-    public function update(int $id, ?string $name, ?string $email, ?string $status)
+    public function update(UserDataDTO $user): int
     {
-        if ($name === null and $email === null and $status === null) {
-            return 0;
-        }
-
-        $updates = [];
-        if($name !== null) {
-            $updates = array_merge($updates, ['name' => $name]);
-        }
-
-        if($email !== null) {
-            $updates = array_merge($updates, ['email' => $email]);
-        }
-
-        if($status !== null) {
-            $updates = array_merge($updates, ['status' => $status]);
-        }
-
-        if(count($updates) === 0) {
-            return 0;
-        }
-
-        return DB::table($this->table)->where('id', $id)->update($updates);
+        $userData = $user->toArray();
+        return DB::table($this->table)->where('id', $user->id)->update($userData);
     }
+//    public function update(int $id, ?string $name, ?string $email, ?string $status)
+//    {
+//        if ($name === null and $email === null and $status === null) {
+//            return 0;
+//        }
+//
+//        $updates = [];
+//        if($name !== null) {
+//            $updates = array_merge($updates, ['name' => $name]);
+//        }
+//
+//        if($email !== null) {
+//            $updates = array_merge($updates, ['email' => $email]);
+//        }
+//
+//        if($status !== null) {
+//            $updates = array_merge($updates, ['status' => $status]);
+//        }
+
+//
+//
+//        if(count($updates) === 0) {
+//            return 0;
+//        }
+//
+//        return DB::table($this->table)->where('id', $id)->update($updates);
+//    }
 
     public function get(int $id)
     {
-        return DB::table($this->table)->select(["id", "name", "email"])->where('id', $id)->first();
+        return DB::table($this->table)->where('id', $id)->first();
     }
 
     public function getAll()
     {
-        return DB::table($this->table)->select(["id", "name", "email"])->get();
+        return DB::table($this->table)->get();
+//        return DB::table($this->table)->select(["id", "name", "email"])->get();
     }
 }

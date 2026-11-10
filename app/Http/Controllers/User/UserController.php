@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\user\UpdateUserRequest;
 use App\Http\Requests\user\UserCreateRequest;
 use App\Services\User\UserService;
 use Illuminate\Http\JsonResponse;
@@ -21,10 +22,10 @@ class UserController extends Controller
         return response()->json($resp, $resp["status_code"]);
     }
 
-    public function updateUser(Request $request): JsonResponse {
-        $data = $request->json()->all();
+    public function updateUser(UpdateUserRequest $request): JsonResponse {
+        $user = $request->user;
 //        $resp = $this->userService->update($data["id"], $data["name"], $data["email"], $data["password"]);
-        $resp = $this->userService->update(...$data);
+        $resp = $this->userService->update($user);
         return response()->json($resp, $resp["status_code"]);
     }
 
