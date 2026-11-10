@@ -25,4 +25,19 @@ class UserService
         ];
     }
 
+    public function update(int $id, ?string $name = null, ?string $email = null, ?string $status = null): array {
+
+        $updated = $this->userRepository->update($id, name: $name, email: $email, status: $status);
+        if ($updated > 0) {
+            return [
+                "message" => "User updated successfully.",
+                "status_code" => 200,
+            ];
+        }
+        return [
+            "message" => "User update Failed.",
+            "status_code" => 500,
+        ];
+    }
+
 }

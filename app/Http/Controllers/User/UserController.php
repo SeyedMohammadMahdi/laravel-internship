@@ -15,7 +15,15 @@ class UserController extends Controller
     }
     public function createUser(Request $request): JsonResponse{
         $data = $request->json()->all();
-        $resp = $this->userService->create($data["name"], $data["email"], $data["password"]);
+        $resp = $this->userService->create(...$data);
+//        $resp = $this->userService->create($data["name"], $data["email"], $data["password"]);
+        return response()->json($resp, $resp["status_code"]);
+    }
+
+    public function updateUser(Request $request): JsonResponse {
+        $data = $request->json()->all();
+//        $resp = $this->userService->update($data["id"], $data["name"], $data["email"], $data["password"]);
+        $resp = $this->userService->update(...$data);
         return response()->json($resp, $resp["status_code"]);
     }
 
