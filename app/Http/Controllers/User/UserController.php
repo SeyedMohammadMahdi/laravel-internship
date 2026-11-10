@@ -28,4 +28,10 @@ class UserController extends Controller
         return response()->json($resp, $resp["status_code"]);
     }
 
+    public function getUser(Request $request): JsonResponse {
+        $data = $request->query("id", null);
+        $resp = $this->userService->get($data);
+        return response()->json($resp, $resp["status_code"]);
+    }
+
 }
