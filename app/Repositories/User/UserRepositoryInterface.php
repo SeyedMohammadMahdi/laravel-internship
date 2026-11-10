@@ -13,4 +13,6 @@ interface UserRepositoryInterface
     public function get(int $id);
 
     public function getAll();
+
+    public function delete(int $id);
 }

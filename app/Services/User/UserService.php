@@ -108,5 +108,17 @@ class UserService
             "data" => $user,
         ];
     }
-
+    public function delete(int $id) {
+        $deleted = $this->userRepository->delete($id);
+        if ($deleted > 0) {
+            return [
+                "message" => "User deleted successfully.",
+                "status_code" => 200,
+            ];
+        }
+        return [
+            "message" => "User is not deleted.",
+            "status_code" => 400,
+        ];
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\user\DeleteUserRequest;
 use App\Http\Requests\user\GetUserRequest;
 use App\Http\Requests\user\UpdateUserRequest;
 use App\Http\Requests\user\UserCreateRequest;
@@ -33,6 +34,12 @@ class UserController extends Controller
     public function getUser(GetUserRequest $request): JsonResponse {
         $user = $request->user;
         $resp = $this->userService->get($user->id);
+        return response()->json($resp, $resp["status_code"]);
+    }
+
+    public function deleteUser(DeleteUserRequest $request): JsonResponse {
+        $id = $request->id;
+        $resp = $this->userService->delete($id);
         return response()->json($resp, $resp["status_code"]);
     }
 

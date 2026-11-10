@@ -52,4 +52,8 @@ class UserRepository implements UserRepositoryInterface
         return DB::table($this->table)->select(["id","name", "email","status"])->get();
 //        return DB::table($this->table)->select(["id", "name", "email"])->get();
     }
+
+    public function delete(int $id) {
+        return DB::table($this->table)->where('id', $id)->delete();
+    }
 }
