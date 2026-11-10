@@ -15,19 +15,6 @@ class UserRepository implements UserRepositoryInterface
     {
         $this->table = $table;
     }
-
-//    public function create(string $name, string $email, string $password, string $status) {
-//        try{
-//            return DB::table($this->table)->insertGetId([
-//                'name' => $name,
-//                'email' => $email,
-//                'password' => Hash::make($password),
-//                'status' => $status
-//            ]);
-//        }catch (\Exception $exception){
-//            return false;
-//        }
-//    }
     public function create(UserDataDTO $user): int|false
     {
         $userData = [
@@ -35,6 +22,8 @@ class UserRepository implements UserRepositoryInterface
             'email' => $user->email,
             'status' => $user->status,
             'password' => Hash::make($user->password),
+            'updated_at' => now(),
+            'created_at' => now(),
         ];
 
 
@@ -49,35 +38,9 @@ class UserRepository implements UserRepositoryInterface
     public function update(UserDataDTO $user): int
     {
         $userData = $user->toArray();
+        $userData['updated_at'] = now();
         return DB::table($this->table)->where('id', $user->id)->update($userData);
     }
-//    public function update(int $id, ?string $name, ?string $email, ?string $status)
-//    {
-//        if ($name === null and $email === null and $status === null) {
-//            return 0;
-//        }
-//
-//        $updates = [];
-//        if($name !== null) {
-//            $updates = array_merge($updates, ['name' => $name]);
-//        }
-//
-//        if($email !== null) {
-//            $updates = array_merge($updates, ['email' => $email]);
-//        }
-//
-//        if($status !== null) {
-//            $updates = array_merge($updates, ['status' => $status]);
-//        }
-
-//
-//
-//        if(count($updates) === 0) {
-//            return 0;
-//        }
-//
-//        return DB::table($this->table)->where('id', $id)->update($updates);
-//    }
 
     public function get(int $id)
     {
@@ -86,7 +49,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function getAll()
     {
-        return DB::table($this->table)->get();
+        return DB::table($this->table)->select(["id","name", "email","status"])->get();
 //        return DB::table($this->table)->select(["id", "name", "email"])->get();
     }
 }
