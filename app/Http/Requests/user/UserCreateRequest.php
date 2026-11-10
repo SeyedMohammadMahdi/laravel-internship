@@ -2,10 +2,12 @@
 
 namespace App\Http\Requests\user;
 
+use App\DTOs\UserDataDTO;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserCreateRequest extends FormRequest
 {
+    public UserDataDTO $user;
 
     public function authorize(): bool {
         return true;
@@ -21,6 +23,7 @@ class UserCreateRequest extends FormRequest
 
     protected function passedValidation(): void
     {
-        $this->replace($this->validated());
+        $data = $this->validated();
+        $this->user = new UserDataDTO(...$data);
     }
 }

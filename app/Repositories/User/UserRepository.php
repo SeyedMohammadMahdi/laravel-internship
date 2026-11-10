@@ -2,8 +2,10 @@
 
 namespace App\Repositories\User;
 
+use App\DTOs\UserDataDTO;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use function Laravel\Prompts\select;
 
 class UserRepository implements UserRepositoryInterface
@@ -14,15 +16,32 @@ class UserRepository implements UserRepositoryInterface
         $this->table = $table;
     }
 
-    public function create(string $name, string $email, string $password, string $status) {
-        try{
-            return DB::table($this->table)->insertGetId([
-                'name' => $name,
-                'email' => $email,
-                'password' => Hash::make($password),
-                'status' => $status
-            ]);
-        }catch (\Exception $exception){
+//    public function create(string $name, string $email, string $password, string $status) {
+//        try{
+//            return DB::table($this->table)->insertGetId([
+//                'name' => $name,
+//                'email' => $email,
+//                'password' => Hash::make($password),
+//                'status' => $status
+//            ]);
+//        }catch (\Exception $exception){
+//            return false;
+//        }
+//    }
+    public function create(UserDataDTO $user): int|false
+    {
+        $userData = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'status' => $user->status,
+            'password' => Hash::make($user->password),
+        ];
+
+
+        try {
+            return DB::table($this->table)->insertGetId($userData);
+        } catch (\Exception $exception) {
+            Log::error($exception->getMessage());
             return false;
         }
     }
