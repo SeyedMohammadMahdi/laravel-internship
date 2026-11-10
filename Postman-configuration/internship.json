@@ -6,6 +6,357 @@
   },
   "item": [
     {
+      "name": "Product",
+      "item": [
+        {
+          "name": "get products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/products/get?page=12&perPage=1000",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "products",
+                "get"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "12"
+                },
+                {
+                  "key": "perPage",
+                  "value": "1000"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "delete product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/products/delete/5",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "products",
+                "delete",
+                "5"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "update a product",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/products/update",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "products",
+                "update"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\":7,\n  \"data\":{\n    \"name\": \"banana\",\n    \"category\": \"fruits\",\n    \"price\": 100,\n    \"stock\": 50\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "filter products",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/products/filter",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "products",
+                "filter"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"max_price\":10,\n  \"name\": \"bana\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "create product",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/products/create",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "products",
+                "create"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"banana\",\n  \"category\": \"fruit\",\n  \"price\": \"100\",\n  \"stock\": 1000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order",
+      "item": [
+        {
+          "name": "Create order",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/order/create",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "order",
+                "create"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer_name\": \"banana\",\n  \"items\":[\n    {\n      \"id\": 7,\n      \"amount\":5\n    },\n    {\n      \"id\": 6,\n      \"amount\":5\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "get all orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/order/get?page=1",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "order",
+                "get"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "1000"
+                }
+              ],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/user",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "user"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"mohammad\",\n  \"email\": \"st.mohammad1326535@gmail.com\",\n  \"password\": \"123456\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "update user data",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/user",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "user"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"mohammad\",\n  \"email\": \"s@gmail.com\",\n  \"id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "get users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/user?id=2",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "2"
+                }
+              ],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "http://hello-api.test/api/user",
+              "protocol": "http",
+              "host": [
+                "hello-api",
+                "test"
+              ],
+              "path": [
+                "api",
+                "user"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "hello world",
       "request": {
         "method": "GET",
@@ -118,7 +469,7 @@
         "header": [],
         "description": "",
         "url": {
-          "raw": "http://hello-api.test/api/filterProducts?category=milk-products",
+          "raw": "http://hello-api.test/api/filterProducts?isAvailable=true",
           "protocol": "http",
           "host": [
             "hello-api",
@@ -228,6 +579,28 @@
               "language": "json"
             }
           }
+        }
+      }
+    },
+    {
+      "name": "test",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "description": "",
+        "url": {
+          "raw": "http://hello-api.test/api/test",
+          "protocol": "http",
+          "host": [
+            "hello-api",
+            "test"
+          ],
+          "path": [
+            "api",
+            "test"
+          ],
+          "query": [],
+          "variable": []
         }
       }
     }
