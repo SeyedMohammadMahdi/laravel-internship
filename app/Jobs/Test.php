@@ -10,6 +10,8 @@ class Test implements ShouldQueue
 {
     use Queueable;
 
+    public $tries = 3;
+    public $backoff = [5, 10, 20];
     /**
      * Create a new job instance.
      */
@@ -25,5 +27,7 @@ class Test implements ShouldQueue
     {
         Log::info("the job is running");
         logger("the job is running");
+        //mock failure
+        throw new \Exception("the job is running");
     }
 }
