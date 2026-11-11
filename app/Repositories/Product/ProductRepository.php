@@ -55,7 +55,7 @@ class ProductRepository implements ProductRepositoryInterface
         }
     }
 
-    public function update($id, ?string $name=null, ?string $category=null, ?float $price=null, ?int $stock = null){
+    public function update($id, ?string $name=null, ?string $category=null, ?float $price=null, ?int $stock = null, ?string $path=null){
         $updates = [];
         if($name !== null){
             $updates['name'] = $name;
@@ -68,6 +68,10 @@ class ProductRepository implements ProductRepositoryInterface
         }
         if($stock !== null){
             $updates['stock'] = $stock;
+        }
+
+        if($path !== null){
+            $updates['path'] = $path;
         }
         $updates['updated_at'] = now();
         return DB::table($this->table)->where('id', $id)->update($updates);

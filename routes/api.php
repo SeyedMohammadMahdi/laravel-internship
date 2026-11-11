@@ -75,3 +75,9 @@ Route::post('/user', [Controllers\User\UserController::class, 'createUser']);
 Route::put("/user", [Controllers\User\UserController::class, 'updateUser']);
 Route::get("/user", [Controllers\User\UserController::class, 'getUser']);
 Route::delete("/user", [Controllers\User\UserController::class, 'deleteUser']);
+
+
+######################################
+#   upload file
+######################################
+Route::post("/upload", [Controllers\Product\ProductController::class, 'uploadProductImage']);
