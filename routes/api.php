@@ -78,6 +78,7 @@ Route::delete("/user", [Controllers\User\UserController::class, 'deleteUser']);
 
 
 ######################################
-#   upload file
+#   product Image
 ######################################
-Route::post("/upload", [Controllers\Product\ProductController::class, 'uploadProductImage']);
+Route::post("/product/image", [Controllers\Product\ProductController::class, 'uploadProductImage']);
+Route::delete("/product/deleteImage/{productId}", [Controllers\Product\ProductController::class, 'deleteProductImage']);

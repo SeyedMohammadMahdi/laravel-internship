@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Product;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductCreationRequest;
+use App\Http\Requests\Product\ProductDeleteImageRequest;
 use App\Http\Requests\Product\ProductDeleteRequest;
 use App\Http\Requests\Product\ProductFilterRequest;
 use App\Http\Requests\Product\ProductGetRequest;
@@ -56,6 +57,12 @@ class ProductController extends Controller
     public function uploadProductImage(ProductImageUploadRequest $request): JsonResponse{
         $fileData = $request->imageUploadDTO;
         $resp = $this->productService->uploadProductImage($fileData);
+        return response()->json($resp, $resp["status_code"]);
+    }
+
+    public function deleteProductImage(ProductDeleteImageRequest $request): JsonResponse{
+        $productId = $request->productId;
+        $resp = $this->productService->deleteProductImage($productId);
         return response()->json($resp, $resp["status_code"]);
     }
 }

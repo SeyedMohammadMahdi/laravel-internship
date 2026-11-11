@@ -161,4 +161,16 @@ class ProductCRUDService
         ];
 
     }
+
+    public function deleteProductImage(int $id): array{
+        $product = $this->productRepository->find($id);
+        if ($product->path !== null){
+            Storage::disk('public')->delete($product->path);
+            $this->productRepository->update($id, path: "");
+        }
+        return [
+            "message"=> "Product image delete success",
+            "status_code"=> 200,
+        ];
+    }
 }
