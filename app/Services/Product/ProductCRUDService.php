@@ -137,16 +137,16 @@ class ProductCRUDService
     public function uploadProductImage(ProductImageUploadDTO $productImageUploadDTO): array{
         $product = $this->productRepository->find($productImageUploadDTO->productId);
         if ($product->path !== null){
-            Storage::disk('public')->delete($product->imagePath);
+            Storage::disk('public')->delete($product->path);
         }
-        $fileName = hash_file('sha256',$productImageUploadDTO->file->getRealPath()) . '.' . $productImageUploadDTO->file->getClientOriginalExtension();
+        $fileName = uniqid() . '_' . hash_file('sha256',$productImageUploadDTO->file->getRealPath()) . '.' . $productImageUploadDTO->file->getClientOriginalExtension();
         $path = $productImageUploadDTO->file->storeAs('uploads', $fileName, 'public');
-        $poductImageDTO = new ProductImageUploadDTO(
+        $productImageDTO = new ProductImageUploadDTO(
             productId: $product->id,
             file: $productImageUploadDTO->file,
             path: $path,
         );
-        $updated = $this->productRepository->update(id: $poductImageDTO->productId,  path: $path);
+        $updated = $this->productRepository->update(id: $productImageDTO->productId,  path: $path);
         if ($updated === 0){
             return [
                 "message"=> "Product image upload failed",
