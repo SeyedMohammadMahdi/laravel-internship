@@ -82,3 +82,12 @@ Route::delete("/user", [Controllers\User\UserController::class, 'deleteUser']);
 ######################################
 Route::post("/product/image", [Controllers\Product\ProductController::class, 'uploadProductImage']);
 Route::delete("/product/deleteImage/{productId}", [Controllers\Product\ProductController::class, 'deleteProductImage']);
+
+
+#####################################
+#   job test
+#####################################
+Route::get('/job', function () {
+    \App\Jobs\Test::dispatch();
+    return response()->json(["message" => "job dispatched"]);
+});
