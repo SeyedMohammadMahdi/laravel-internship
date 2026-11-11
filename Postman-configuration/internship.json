@@ -15,11 +15,10 @@
             "header": [],
             "description": "",
             "url": {
-              "raw": "http://hello-api.test/api/products/get?page=12&perPage=1000",
-              "protocol": "http",
+              "raw": "{{URL}}/api/products/get",
+              "protocol": "",
               "host": [
-                "hello-api",
-                "test"
+                "{{URL}}"
               ],
               "path": [
                 "api",
@@ -47,11 +46,10 @@
             "header": [],
             "description": "",
             "url": {
-              "raw": "http://hello-api.test/api/products/delete/5",
-              "protocol": "http",
+              "raw": "{{URL}}/api/products/delete/5",
+              "protocol": "",
               "host": [
-                "hello-api",
-                "test"
+                "{{URL}}"
               ],
               "path": [
                 "api",
@@ -129,17 +127,58 @@
           }
         },
         {
+          "name": "product image upload",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{URL}}/api/product/image",
+              "protocol": "",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "api",
+                "product",
+                "image"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "disabled": false,
+                  "type": "file",
+                  "description": "",
+                  "src": "/home/mohamadmahdiniknam/Downloads/simple-jpg-file-icon-jpeg-data-vector.jpg",
+                  "contentType": "image/jpeg"
+                },
+                {
+                  "key": "product_id",
+                  "disabled": false,
+                  "type": "text",
+                  "description": "",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        },
+        {
           "name": "create product",
           "request": {
             "method": "POST",
             "header": [],
             "description": "",
             "url": {
-              "raw": "http://hello-api.test/api/products/create",
-              "protocol": "http",
+              "raw": "{{URL}}/api/products/create",
+              "protocol": "",
               "host": [
-                "hello-api",
-                "test"
+                "{{URL}}"
               ],
               "path": [
                 "api",
@@ -157,6 +196,29 @@
                   "language": "json"
                 }
               }
+            }
+          }
+        },
+        {
+          "name": "product image delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "description": "",
+            "url": {
+              "raw": "{{URL}}/api/product/deleteImage/1",
+              "protocol": "",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "api",
+                "product",
+                "deleteImage",
+                "1"
+              ],
+              "query": [],
+              "variable": []
             }
           }
         }
@@ -357,247 +419,22 @@
       ]
     },
     {
-      "name": "hello world",
+      "name": "test copy",
       "request": {
         "method": "GET",
         "header": [],
         "description": "",
         "url": {
-          "raw": "http://hello-api.test/api/helloV3/mohammad",
+          "raw": "http://laravel-internship.test/storage/uploads/b017d8384e3fa1c47871aa6364819e0d573d9710e3af71dc6981bd922ac3df94.jpg",
           "protocol": "http",
           "host": [
-            "hello-api",
+            "laravel-internship",
             "test"
           ],
           "path": [
-            "api",
-            "helloV3",
-            "mohammad"
-          ],
-          "query": [],
-          "variable": []
-        }
-      }
-    },
-    {
-      "name": "get version",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/version",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "version"
-          ],
-          "query": [],
-          "variable": []
-        }
-      }
-    },
-    {
-      "name": "get users list",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/userList",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "userList"
-          ],
-          "query": [],
-          "variable": []
-        }
-      }
-    },
-    {
-      "name": "testing middle ware",
-      "request": {
-        "method": "post",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "description": "",
-            "disabled": false,
-            "type": "default"
-          }
-        ],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/userData",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "userData"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"name\": \"mohammad\",\n  \"age\": 30,\n  \"nationalCode\": 1234456890\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "filter products by category or availability",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/filterProducts?isAvailable=true",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "filterProducts"
-          ],
-          "query": [
-            {
-              "key": "category",
-              "value": "milk-products"
-            },
-            {
-              "key": "isAvailable",
-              "value": "true"
-            }
-          ],
-          "variable": []
-        }
-      }
-    },
-    {
-      "name": "get product by id",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/getProducts/:id",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "getProducts",
-            ":id"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "key": "id",
-              "value": "1"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "get products list",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/getProducts",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "getProducts"
-          ],
-          "query": [],
-          "variable": []
-        }
-      }
-    },
-    {
-      "name": "testing middle ware copy",
-      "request": {
-        "method": "post",
-        "header": [
-          {
-            "key": "Content-Type",
-            "value": "application/json",
-            "description": "",
-            "disabled": false,
-            "type": "default"
-          }
-        ],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/sendNotification",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "sendNotification"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"type\": \"email\",\n  \"recipient\": \"mohammad\",\n  \"message\": \"how you doing mohammad?\"\n}",
-          "options": {
-            "raw": {
-              "language": "json"
-            }
-          }
-        }
-      }
-    },
-    {
-      "name": "test",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "description": "",
-        "url": {
-          "raw": "http://hello-api.test/api/test",
-          "protocol": "http",
-          "host": [
-            "hello-api",
-            "test"
-          ],
-          "path": [
-            "api",
-            "test"
+            "storage",
+            "uploads",
+            "b017d8384e3fa1c47871aa6364819e0d573d9710e3af71dc6981bd922ac3df94.jpg"
           ],
           "query": [],
           "variable": []
@@ -605,5 +442,11 @@
       }
     }
   ],
-  "variable": []
+  "variable": [
+    {
+      "key": "URL",
+      "value": "",
+      "type": "default"
+    }
+  ]
 }
