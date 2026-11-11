@@ -7,6 +7,7 @@ use App\Http\Requests\Product\ProductCreationRequest;
 use App\Http\Requests\Product\ProductDeleteRequest;
 use App\Http\Requests\Product\ProductFilterRequest;
 use App\Http\Requests\Product\ProductGetRequest;
+use App\Http\Requests\Product\ProductImageUploadRequest;
 use App\Http\Requests\Product\ProductUpdateRequest;
 use App\Services\Product\ProductCRUDService;
 use App\Services\Product\ProductFilterService;
@@ -50,5 +51,11 @@ class ProductController extends Controller
     public function filterProducts(ProductFilterRequest $request): JsonResponse{
         $body = $request->validated();
         return response()->json($this->productFilterService->filter($body["name"] ?? null, $body["category"] ?? null, $body["is_available"] ?? null, $body["min_price"] ?? null, $body["max_price"] ?? null));
+    }
+
+    public function uploadProductImage(ProductImageUploadRequest $request): JsonResponse{
+        $fileData = $request->imageUploadDTO;
+        $resp = $this->productService->uploadProductImage($fileData);
+        return response()->json($resp, $resp["status_code"]);
     }
 }

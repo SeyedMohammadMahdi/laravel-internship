@@ -2,9 +2,11 @@
 
 namespace App\Services\Product;
 
+use App\DTOs\Product\ProductImageUploadDTO;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
+use Illuminate\Support\Facades\Storage;
 
 class ProductCRUDService
 {
@@ -130,5 +132,33 @@ class ProductCRUDService
             "message"=> "Product updated",
             "status_code"=> 200,
         ];
+    }
+
+    public function uploadProductImage(ProductImageUploadDTO $productImageUploadDTO): array{
+        $product = $this->productRepository->find($productImageUploadDTO->productId);
+        if ($product->path !== null){
+            Storage::disk('public')->delete($product->path);
+        }
+        $fileName = uniqid() . '_' . hash_file('sha256',$productImageUploadDTO->file->getRealPath()) . '.' . $productImageUploadDTO->file->getClientOriginalExtension();
+        $path = $productImageUploadDTO->file->storeAs('uploads', $fileName, 'public');
+        $productImageDTO = new ProductImageUploadDTO(
+            productId: $product->id,
+            file: $productImageUploadDTO->file,
+            path: $path,
+        );
+        $updated = $this->productRepository->update(id: $productImageDTO->productId,  path: $path);
+        if ($updated === 0){
+            return [
+                "message"=> "Product image upload failed",
+                "status_code"=> 400,
+            ];
+        }
+        $url = Storage::disk('public')->url($path);
+        return [
+            "message"=> "Product image upload success",
+            "status_code"=> 200,
+            "path"=> $url,
+        ];
+
     }
 }
