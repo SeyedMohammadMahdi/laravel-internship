@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\OrderCreateRequest;
 use App\Http\Requests\Order\OrderGetRequest;
 use App\Models\Order;
 use App\Services\Order\OrderService;
@@ -16,9 +17,9 @@ class OrderController extends Controller
     public function __construct(){
         $this->orderService = app(OrderService::class);
     }
-    public function create(Request $request): JsonResponse {
-        $body = $request->json()->all();
-        return response()->json($this->orderService->createOrder($body["items"], $body["customer_name"]));
+    public function create(OrderCreateRequest $request): JsonResponse {
+        $order = $request->orderDTO;
+        return response()->json($this->orderService->createOrder($order->products, $order->customerName));
 
     }
 

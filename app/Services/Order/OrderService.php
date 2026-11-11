@@ -2,6 +2,8 @@
 
 namespace App\Services\Order;
 
+use App\DTOs\Order\OrderCreateDTO;
+use App\Events\OrderPlaceEvent;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\Order\OrderRepositoryInterface;
@@ -94,6 +96,10 @@ class OrderService
                 "price" => $product->price,
             ];
         }
+        OrderPlaceEvent::dispatch(new OrderCreateDTO(
+            $customerName,
+            $items,
+        ));
         return [
             "message" => "Order created",
             "status_code" => 201,
