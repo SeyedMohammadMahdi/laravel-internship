@@ -6,6 +6,7 @@ use App\DTOs\Order\OrderCreateDTO;
 use App\Events\OrderCancelEvent;
 use App\Events\OrderPlaceEvent;
 use App\Http\Requests\Order\OrderCancelRequest;
+use App\Jobs\SendOrderNotification;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\Order\OrderRepositoryInterface;
@@ -102,10 +103,11 @@ class OrderService
             $customerName,
             $items,
         ));
+        SendOrderNotification::dispatch($customerName, $totalPrice);
         return [
             "message" => "Order created",
             "status_code" => 201,
-            "total_price"=> $totalAmount * $product->price,
+            "total_price"=> $totalPrice,
             "data" => $data,
         ];
 
