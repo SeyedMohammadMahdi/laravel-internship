@@ -54,6 +54,7 @@ Route::post("/products/filter", [Controllers\Product\ProductController::class, '
 #####################################
 Route::post("/order/create", [Controllers\Order\OrderController::class, 'create']);
 Route::get("/order/get", [Controllers\Order\OrderController::class, 'getAll']);
+Route::patch("/order/cancel", [Controllers\Order\OrderController::class, 'cancelOrder']);
 #####################################
 #   Notification API
 #####################################

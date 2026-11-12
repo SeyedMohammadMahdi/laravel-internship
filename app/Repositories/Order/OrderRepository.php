@@ -71,4 +71,10 @@ class OrderRepository implements OrderRepositoryInterface
 
         return $output;
     }
+
+    public function updateStatus(int $id, string $status): int{
+        return DB::table($this->table)->where('id', $id)->update([
+            'status' => $status
+        ]);
+    }
 }
