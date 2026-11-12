@@ -19,7 +19,7 @@ class ProductRepository implements ProductRepositoryInterface
     }
 
     public function all(int $page = 1, int $perPage = 10){
-        $paginated = Cache::tags(["products"])->remember("products_{$page}_{$perPage}", 600, function () use ($page, $perPage) {
+        $paginated = Cache::tags(["products", "products_list"])->remember("products_{$page}_{$perPage}", 600, function () use ($page, $perPage) {
             $paginated = DB::table($this->table)->paginate($perPage, ["*"], "page", $page);
             Log::info("_______________________________ CACHE MISSED _________________________________");
             return [
@@ -49,7 +49,7 @@ class ProductRepository implements ProductRepositoryInterface
     public function create(string $name, string $category, float $price, int $stock): int|bool
     {
         try {
-             return DB::table($this->table)->insertGetId([
+             $productId = DB::table($this->table)->insertGetId([
                 'name' => $name,
                 'category' => $category,
                 'price' => $price,
@@ -57,17 +57,9 @@ class ProductRepository implements ProductRepositoryInterface
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-//            if (is_int($createdProduct)) {
-//                return [
-//                    "message" => "Product created.",
-//                    "status_code" => 201,
-//                    "id" => $createdProduct
-//                ];
-//            }
-//            return [
-//                "message" => "Product not created.",
-//                "status_code" => 400
-//            ];
+
+             Cache::tags(["products_list"])->flush();
+             return $productId;
         }catch (\Exception $exception){
             return false;
         }
@@ -92,7 +84,10 @@ class ProductRepository implements ProductRepositoryInterface
             $updates['path'] = $path;
         }
         $updates['updated_at'] = now();
-        return DB::table($this->table)->where('id', $id)->update($updates);
+        $output = DB::table($this->table)->where('id', $id)->update($updates);
+        Cache::tags(["products_list"])->flush();
+        Cache::tags(["products"])->forget("products_{$id}");
+        return $output;
     }
 
     public function delete(int $id){
