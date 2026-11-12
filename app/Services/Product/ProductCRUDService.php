@@ -45,21 +45,21 @@ class ProductCRUDService
     public function get(?int $id = null, int $page = 1, int $perPage = 10): array{
         if ($id == null){
             $output = $this->productRepository->all(page: $page, perPage: $perPage);
-            if($output->count() === 0){
+            if(count($output["data"]) === 0){
                 return [
                     "message" => "No product found",
                     "status_code" => 404,
-                    "last_page"=> $output->lastPage(),
+                    "last_page"=> $output["last_page"],
                 ];
             }
             return [
                 "message" => "Products found",
                 "status_code" => 200,
-                "data" => $output->getCollection()->toArray(),
-                "last_page" => $output->lastPage(),
-                "current_page" => $output->currentPage(),
-                "total" => $output->total(),
-                "per_page" => $output->perPage(),
+                "data" => $output['data'],
+                "last_page" => $output['last_page'],
+                "current_page" => $output['current_page'],
+                "total" => $output['total'],
+                "per_page" => $output['per_page'],
             ];
         }
         $product = $this->productRepository->find($id);

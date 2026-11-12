@@ -2,10 +2,13 @@
 
 namespace App\Repositories\Product;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductRepository implements ProductRepositoryInterface
 {
@@ -15,23 +18,38 @@ class ProductRepository implements ProductRepositoryInterface
         $this->table = $table;
     }
 
-    public function all(int $page = 1, int $perPage = 10): LengthAwarePaginator{
-//        $h =  DB::table($this->table)->paginate($perPage, ["*"], "page", $page);
-//        $h->lastPage();
-//        $h->perPage()
-//        $h->toArray()
-        return DB::table($this->table)->paginate($perPage, ["*"], "page", $page);
+    public function all(int $page = 1, int $perPage = 10){
+        $paginated = Cache::tags(["products", "products_list"])->remember("products_{$page}_{$perPage}", 600, function () use ($page, $perPage) {
+            $paginated = DB::table($this->table)->paginate($perPage, ["*"], "page", $page);
+            Log::info("_______________________________ CACHE MISSED _________________________________");
+            return [
+                "data"=>ProductResource::collection($paginated)->resolve(),
+                "last_page"=>$paginated->lastPage(),
+                "current_page"=>$paginated->currentPage(),
+                "total"=>$paginated->total(),
+                "per_page"=>$paginated->perPage(),
+            ];
+        });
+
+        return $paginated;
     }
 
-    public function find(int $id): \stdClass|null
+    public function find(int $id): array|null
     {
-        return DB::table($this->table)->find($id);
+        return Cache::tags(["products"])->remember("products_{$id}", 600, function () use ($id) {
+            $product = DB::table($this->table)->find($id);
+            Log::info("____________________________________ CACHE MISSED _________________________________");
+            if($product === null) {
+                return null;
+            }
+            return new ProductResource($product)->resolve();
+        });
     }
 
     public function create(string $name, string $category, float $price, int $stock): int|bool
     {
         try {
-             return DB::table($this->table)->insertGetId([
+             $productId = DB::table($this->table)->insertGetId([
                 'name' => $name,
                 'category' => $category,
                 'price' => $price,
@@ -39,17 +57,9 @@ class ProductRepository implements ProductRepositoryInterface
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-//            if (is_int($createdProduct)) {
-//                return [
-//                    "message" => "Product created.",
-//                    "status_code" => 201,
-//                    "id" => $createdProduct
-//                ];
-//            }
-//            return [
-//                "message" => "Product not created.",
-//                "status_code" => 400
-//            ];
+
+             Cache::tags(["products_list"])->flush();
+             return $productId;
         }catch (\Exception $exception){
             return false;
         }
@@ -74,7 +84,10 @@ class ProductRepository implements ProductRepositoryInterface
             $updates['path'] = $path;
         }
         $updates['updated_at'] = now();
-        return DB::table($this->table)->where('id', $id)->update($updates);
+        $output = DB::table($this->table)->where('id', $id)->update($updates);
+        Cache::tags(["products_list"])->flush();
+        Cache::tags(["products"])->forget("products_{$id}");
+        return $output;
     }
 
     public function delete(int $id){
