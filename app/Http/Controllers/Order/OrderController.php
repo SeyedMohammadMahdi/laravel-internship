@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Order\OrderCancelRequest;
 use App\Http\Requests\Order\OrderCreateRequest;
 use App\Http\Requests\Order\OrderGetRequest;
 use App\Models\Order;
@@ -28,5 +29,10 @@ class OrderController extends Controller
         $limit = $request->input("limit", 1);
         $resp = $this->orderService->getAll($page, $limit);
         return response()->json($resp, $resp["status_code"]);
+    }
+
+    public function cancelOrder(OrderCancelRequest $request): JsonResponse {
+        $orderId = $request->id;
+        return response()->json($this->orderService->cancelOrder($orderId));
     }
 }

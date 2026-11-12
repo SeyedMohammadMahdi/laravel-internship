@@ -3,7 +3,9 @@
 namespace App\Services\Order;
 
 use App\DTOs\Order\OrderCreateDTO;
+use App\Events\OrderCancelEvent;
 use App\Events\OrderPlaceEvent;
+use App\Http\Requests\Order\OrderCancelRequest;
 use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\Order\OrderRepositoryInterface;
@@ -136,6 +138,21 @@ class OrderService
             "data"=>$output->toArray(),
             "last_page"=>$ordersPaginated->lastPage(),
             "current_page"=>$ordersPaginated->currentPage(),
+        ];
+    }
+
+    public function cancelOrder(int $orderId){
+        $updated = $this->orderRepository->updateStatus($orderId, "cancelled");
+        if ($updated !== 0) {
+            OrderCancelEvent::dispatch($orderId);
+            return [
+                "message"=>"Order cancelled",
+                "status_code"=>200,
+            ];
+        }
+        return [
+            "message"=>"Order cancelled",
+            "status_code"=>400,
         ];
     }
 }
